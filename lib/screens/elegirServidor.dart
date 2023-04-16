@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_progra/screens/detallarServidor.dart';
 
 import '../models/servidor_model.dart';
 import '../services/servidor_service.dart';
@@ -199,11 +200,11 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (_) =>
-                  // ModifyUsuario(snapshot.data![index])));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              DetallarServidor(snapshot.data![index])));
                 },
                 onLongPress: () {},
                 title: Text(snapshot.data![index].codServidor),
@@ -219,7 +220,7 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
                 setState(() {
                   _asynCall = true;
                 });
-                listadoServidores = Servidor_Service.getUsuarios();
+                listadoServidores = Servidor_Service.getServidores();
                 setState(() {
                   _asynCall = false;
                 });

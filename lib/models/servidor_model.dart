@@ -4,7 +4,7 @@ String usuarioModelToJson(List<Servidor_Model> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Servidor_Model {
-  late String codServidor;
+  String codServidor;
   late String nombServidor;
   late String descServidor;
   late String userAdmiServidor;
