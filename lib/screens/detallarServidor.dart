@@ -62,7 +62,7 @@ class _DetallarServidorState extends State<DetallarServidor> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, 'servidorW');
+                    Navigator.pushNamed(context, 'moniServidor');
                   },
                   child: Container(
                     height: 500,

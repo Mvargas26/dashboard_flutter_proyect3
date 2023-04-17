@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:proyecto_progra/models/monitoreoServidor_model.dart';
 import 'package:proyecto_progra/models/servidor_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -60,29 +61,31 @@ class Servidor_Service {
     }
   } //fn getServidorID
 
-  //*** Metodo para obtener Monitoreo
-  static Future<List<Servidor_Model>?> monitoreoServidor() async {
-    var url = Uri.parse(_baseURL + "servidor");
+  //*** Metodo para obtener Monitoreo Servidor
+  static Future<MonitoreoServidor_Model> monitoreoServidor(
+      String codServer) async {
+    var url = Uri.parse(_baseURL + "MonitoreoDashboard11/" + codServer);
     final response = await http.get(url);
-    List<Servidor_Model> Servidores = [];
+    MonitoreoServidor_Model monitoreoActual =
+        MonitoreoServidor_Model("", "", DateTime.now(), 0, 0, 0, "");
 
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
 
       final jsonData = jsonDecode(body);
 
-      for (var i = 0; i < jsonData.length; i++) {
-        Servidores.add(Servidor_Model(
-            jsonData[i]["c"]["codServidor"],
-            jsonData[i]["c"]["nombServidor"],
-            jsonData[i]["c"]["descServidor"],
-            jsonData[i]["c"]["userAdmiServidor"],
-            jsonData[i]["c"]["passServidor"]));
-      }
+      monitoreoActual.servidor = jsonData["servidor"];
+      monitoreoActual.nombre = jsonData["nombre"];
+      monitoreoActual.fechaMonitoreo =
+          DateTime.parse(jsonData["fechaMonitoreo"]);
+      monitoreoActual.estado = jsonData["estado"];
+      monitoreoActual.cpu = int.parse(jsonData["cpu"].toString());
+      monitoreoActual.memoria = int.parse(jsonData["memoria"].toString());
+      monitoreoActual.espacio = int.parse(jsonData["espacio"].toString());
 
-      return Servidores;
+      return monitoreoActual;
     } else {
       throw Exception("Fallo");
     }
   } //fn getServidores
-}//fin class
+}//fin class 
