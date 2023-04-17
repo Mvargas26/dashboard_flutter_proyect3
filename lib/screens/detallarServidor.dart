@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_progra/services/staticC.dart';
 import '../models/servidor_model.dart';
 
 class DetallarServidor extends StatefulWidget {
@@ -11,12 +12,13 @@ class DetallarServidor extends StatefulWidget {
 }
 
 class _DetallarServidorState extends State<DetallarServidor> {
-  Servidor_Model server = Servidor_Model("1", "1", "1", "1", "1");
   late TextEditingController _idController;
+  Servidor_Model server = Servidor_Model("", "", "", "", "");
+
   @override
   void initState() {
     Servidor_Model sr = widget._servidor_model;
-    server.codServidor = sr.codServidor;
+    server = sr;
     _idController = new TextEditingController(text: sr.codServidor);
 
     super.initState();
@@ -95,22 +97,23 @@ class _DetallarServidorState extends State<DetallarServidor> {
         Container(
           height: 50,
           color: Color.fromARGB(255, 167, 109, 175),
-          child: const Center(child: Text('Codigo del Servidor:')),
+          child:
+              Center(child: Text('Codigo del Servidor:' + StaticC.idServidor)),
         ),
         Container(
           height: 50,
           color: Color.fromARGB(255, 167, 109, 175),
-          child: const Center(child: Text('Nombre:')),
+          child: Center(child: Text('Nombre: ' + server.nombServidor)),
         ),
         Container(
           height: 50,
           color: Color.fromARGB(255, 167, 109, 175),
-          child: const Center(child: Text('Descripcion:')),
+          child: Center(child: Text('Descripcion:' + server.descServidor)),
         ),
         Container(
           height: 50,
           color: Color.fromARGB(255, 167, 109, 175),
-          child: const Center(child: Text('Usuario que Administra:')),
+          child: Center(child: Text('Usuario que Administra:')),
         ),
       ],
     );

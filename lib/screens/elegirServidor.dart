@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_progra/screens/detallarServidor.dart';
+import 'package:proyecto_progra/services/staticC.dart';
 
 import '../models/servidor_model.dart';
 import '../services/servidor_service.dart';
@@ -200,6 +201,8 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 onTap: () {
+                  StaticC.idServidor = snapshot.data![index]
+                      .codServidor; //aqui guardamos el id seleccionado
                   Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -59,4 +59,30 @@ class Servidor_Service {
       throw Exception("Fallo");
     }
   } //fn getServidorID
+
+  //*** Metodo para obtener Monitoreo
+  static Future<List<Servidor_Model>?> monitoreoServidor() async {
+    var url = Uri.parse(_baseURL + "servidor");
+    final response = await http.get(url);
+    List<Servidor_Model> Servidores = [];
+
+    if (response.statusCode == 200) {
+      String body = utf8.decode(response.bodyBytes);
+
+      final jsonData = jsonDecode(body);
+
+      for (var i = 0; i < jsonData.length; i++) {
+        Servidores.add(Servidor_Model(
+            jsonData[i]["c"]["codServidor"],
+            jsonData[i]["c"]["nombServidor"],
+            jsonData[i]["c"]["descServidor"],
+            jsonData[i]["c"]["userAdmiServidor"],
+            jsonData[i]["c"]["passServidor"]));
+      }
+
+      return Servidores;
+    } else {
+      throw Exception("Fallo");
+    }
+  } //fn getServidores
 }//fin class
