@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:proyecto_progra/services/staticC.dart';
@@ -13,9 +15,16 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
   Future<MonitoreoServidor_Model>? monitoreoServidor;
   bool _asynCall = false;
 
+  @override
   void initState() {
     monitoreoServidor = Servidor_Service.monitoreoServidor(StaticC.idServidor);
     super.initState();
+    //Esta funcion vuelve a llamar al metodo cada 2 min
+    Timer.periodic(Duration(minutes: 1), (timer) {
+      monitoreoServidor =
+          Servidor_Service.monitoreoServidor(StaticC.idServidor);
+      print("Se recargo:" + DateTime.now().toString());
+    });
   }
 
   @override
