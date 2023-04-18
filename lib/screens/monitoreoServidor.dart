@@ -53,7 +53,7 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                         new CircularPercentIndicator(
                           radius: 45.0,
                           lineWidth: 4.0,
-                          percent: snapshot.data!.cpu / 10,
+                          percent: snapshot.data!.cpu / 100,
                           center: new Text(snapshot.data!.cpu.toString() + "%"),
                           progressColor: Colors.red,
                           footer: new Text("CPU",
@@ -66,8 +66,9 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                         new CircularPercentIndicator(
                           radius: 45.0,
                           lineWidth: 4.0,
-                          percent: 0.30,
-                          center: new Text("30%"),
+                          percent: snapshot.data!.memoria / 100,
+                          center:
+                              new Text(snapshot.data!.memoria.toString() + "%"),
                           progressColor: Colors.orange,
                           footer: new Text("RAM",
                               style: new TextStyle(
@@ -79,8 +80,9 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                         new CircularPercentIndicator(
                           radius: 45.0,
                           lineWidth: 4.0,
-                          percent: 0.60,
-                          center: new Text("60%"),
+                          percent: snapshot.data!.espacio / 1000,
+                          center: new Text(
+                              (snapshot.data!.espacio / 10).toString() + "%"),
                           progressColor: Colors.yellow,
                           footer: new Text("DISCO",
                               style: new TextStyle(
@@ -100,17 +102,46 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                     height: 60,
                     color: Color.fromARGB(255, 54, 94, 206),
                     child: Center(
-                        child: Text('Nombre del Servidor:' +
-                            "\n" +
-                            snapshot.data!.nombre)),
+                        child: Text(
+                      'Nombre del Servidor: \n ' + snapshot.data!.nombre,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )),
                   ),
                   Container(
                     height: 60,
                     color: Color.fromARGB(255, 54, 171, 206),
                     child: Center(
-                        child: Text('Fecha Monitoreo:' +
-                            "\n" +
-                            snapshot.data!.fechaMonitoreo.toString())),
+                        child: Text(
+                      'Fecha Monitoreo:' +
+                          "\n" +
+                          snapshot.data!.fechaMonitoreo.toString(),
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )),
+                  ),
+                  Container(
+                    height: 50,
+                    color: Color.fromARGB(255, 243, 242, 243),
+                    child: Center(
+                      child: Text("Estado del Servidor: "),
+                    ),
+                  ),
+                  Container(
+                    height: 60,
+                    color: snapshot.data!.estado == "alert"
+                        ? Colors.yellow
+                        : snapshot.data!.estado == "danger"
+                            ? Colors.red
+                            : Colors.green,
+                    child: Center(
+                        child: Text(snapshot.data!.estado,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold))),
                   ),
                 ],
               ),
