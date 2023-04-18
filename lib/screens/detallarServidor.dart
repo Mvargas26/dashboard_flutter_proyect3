@@ -12,15 +12,12 @@ class DetallarServidor extends StatefulWidget {
 }
 
 class _DetallarServidorState extends State<DetallarServidor> {
-  late TextEditingController _idController;
   Servidor_Model server = Servidor_Model("", "", "", "", "");
 
   @override
   void initState() {
     Servidor_Model sr = widget._servidor_model;
     server = sr;
-    _idController = new TextEditingController(text: sr.codServidor);
-
     super.initState();
   }
 
