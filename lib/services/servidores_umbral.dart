@@ -54,8 +54,8 @@ static Future<bool> createServidor(ServidoresR c) async{
 
 static Future<bool> eliminarUmbral(String server, String umbral, String componente ) async {
     var url =
-        Uri.parse(_baseURL + "paramSensibilidad?idServer=$server&idUmbral=$umbral&idComp=$componente");
-
+        Uri.parse(_baseURL + "paramSensibilidad/"+server+"/"+umbral+"/"+componente+"");
+//http://localhost:5021/paramSensibilidad/prueba/alert/CO1
       
     final response = await http.delete(url);
     if (response.statusCode == 200) {
@@ -82,7 +82,25 @@ static Future<bool> eliminarUmbral(String server, String umbral, String componen
     } else {
       return false;
     }
-  } //fn createUsuario
+  } //fn editarparametro
+
+
+//*** Metodo para EDITAR servidor
+  static Future<bool> editarServidor(ServidoresR c) async {
+    var url = Uri.parse(_baseURL + 'Servidor');
+
+    final response = await http.put(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(c.toJson()));
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  } //fn sevidor
 
 }
 

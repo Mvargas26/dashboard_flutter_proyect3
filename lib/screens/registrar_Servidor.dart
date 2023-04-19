@@ -257,7 +257,6 @@ Widget _inputpass(BuildContext context) {
         padding: EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(children: [
           TextFieldCustom1(
-            
               type: TextInputType.text,
               pass: false,
               texto: 'Contraseña',
@@ -267,17 +266,6 @@ Widget _inputpass(BuildContext context) {
           ),
         ]));
   }
-
-
-
-
-
-
-
-
-
-
-
 
  Widget _registrar(BuildContext context) {
     return Container(
@@ -335,13 +323,13 @@ Widget _inputpass(BuildContext context) {
 
     if (await Umbral_Service.createServidor(c)) {
       final snackBar = SnackBar(
-        content: Text('Correo creado con éxito'),
+        content: Text('Servidor creado con éxito'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.pop(context, c);
     } else {
       final snackBar = SnackBar(
-        content: Text('Error creando correo'),
+        content: Text('Servidor creado con éxito'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       setState(() {
@@ -349,6 +337,34 @@ Widget _inputpass(BuildContext context) {
       });
     }
   }
+
+
+//atualizar
+void _actualizarServidor() async {
+   var c = ServidoresR(codServidor: '', descServidor: '', nombServidor: '', passServidor: '', userAdmiServidor: '');
+  c.codServidor = _servidorController.text;
+  c.nombServidor = _nombreController.text;
+  c.descServidor = _descripcionController.text;
+  c.passServidor = _contrasenaController.text;
+  c.userAdmiServidor=_admiRegistraController.text;
+
+    if (await Umbral_Service.editarServidor(c)) {
+      final snackBar = SnackBar(
+        content: Text('Servidor actualizado con éxito'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.pop(context, '');
+    } else {
+      final snackBar = SnackBar(
+        content: Text('Error actualizando el servidor'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+
+ 
+
 
 }
 
