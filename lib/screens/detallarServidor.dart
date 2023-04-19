@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_progra/services/encriptar.dart';
 import 'package:proyecto_progra/services/staticC.dart';
 import '../models/servidor_model.dart';
 
@@ -111,6 +112,13 @@ class _DetallarServidorState extends State<DetallarServidor> {
           height: 50,
           color: Color.fromARGB(255, 167, 109, 175),
           child: Center(child: Text('Usuario que Administra:')),
+        ),
+        Container(
+          height: 50,
+          color: Color.fromARGB(255, 167, 109, 175),
+          child: Center(
+              child: Text('Usuario que Administra: \n' +
+                  server.passServidor.desencriptar())),
         ),
       ],
     );
