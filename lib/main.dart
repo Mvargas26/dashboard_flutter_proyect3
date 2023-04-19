@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_progra/screens/detalleServicios.dart';
 import 'package:proyecto_progra/screens/elegirServidor.dart';
 import 'package:proyecto_progra/screens/login.dart';
 import 'package:proyecto_progra/screens/mantenimientoServidor.dart';
@@ -22,9 +23,10 @@ class MyApp extends StatelessWidget {
         'elegirServidor': (_) => ElegirSeridorPage(),
         'servidorW': (_) => ServidorWPage(),
         'moniServidor': (_) => MonitoreoServidor(),
-        'mantenimientoServidor':(_)=>MantenimientoServiidorPage(),
-        'registrarParametros':(_)=>RegistrarParametrosPage(),
-        'registrarServidor':(_)=>RegistrarServidorPage(),
+        'mantenimientoServidor': (_) => MantenimientoServiidorPage(),
+        'registrarParametros': (_) => RegistrarParametrosPage(),
+        'registrarServidor': (_) => RegistrarServidorPage(),
+        'detalleServicios': (_) => DetalleServicios(),
       },
     );
   }
