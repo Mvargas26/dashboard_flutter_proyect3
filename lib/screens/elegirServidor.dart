@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_progra/screens/detallarServidor.dart';
+import 'package:proyecto_progra/screens/monitoreoServidor.dart';
 import 'package:proyecto_progra/services/staticC.dart';
 
 import '../models/servidor_model.dart';
@@ -20,6 +21,7 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
   @override
   void initState() {
     super.initState();
+    listadoServidores = Servidor_Service.getServidores();
   }
 
   @override
@@ -232,6 +234,7 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
                       context,
                       MaterialPageRoute(
                           builder: (_) =>
+                              // MonitoreoServidor()));
                               DetallarServidor(snapshot.data![index])));
                 },
                 onLongPress: () {},
@@ -253,14 +256,12 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
                   _asynCall = false;
                 });
               },
-              child: Text("Ver Servidores"),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
           );
         }
-        //Mientras es una u otra muestra la ruedita
-        return Center(
-          child: CircularProgressIndicator(),
-        );
       },
     );
   }

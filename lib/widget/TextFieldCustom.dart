@@ -12,7 +12,7 @@ class TextFieldCustom extends StatelessWidget {
     required this.type,
     required this.pass,
     required this.texto,
-    required this.controller,
+    required this.controller
   });
 
   // Añade `this.controller` aquí

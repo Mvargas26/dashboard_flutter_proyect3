@@ -17,15 +17,30 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
 
   @override
   void initState() {
-    monitoreoServidor = Servidor_Service.monitoreoServidor(StaticC.idServidor);
+    //monitoreoServidor = Servidor_Service.monitoreoServidor(StaticC.idServidor);
     super.initState();
+
+    _ejecutarMonitoreoServidores();
     //Esta funcion vuelve a llamar al metodo cada 2 min
-    Timer.periodic(Duration(minutes: 1), (timer) {
-      monitoreoServidor =
-          Servidor_Service.monitoreoServidor(StaticC.idServidor);
+    Timer.periodic(Duration(seconds: 60), (timer) {
+      _ejecutarMonitoreoServidores();
       print("Se recargo:" + DateTime.now().toString());
     });
   }
+
+//////////////////////
+  Future<void> _ejecutarMonitoreoServidores() async {
+    try {
+      setState(() {
+        monitoreoServidor =
+            Servidor_Service.monitoreoServidor(StaticC.idServidor);
+      });
+    } catch (e) {
+      print('Error al obtener Monitoreo: $e');
+    }
+  }
+
+//////////
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +81,12 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                         new CircularPercentIndicator(
                           radius: 45.0,
                           lineWidth: 4.0,
-                          percent: snapshot.data!.memoria / 100,
-                          center:
-                              new Text(snapshot.data!.memoria.toString() + "%"),
+                          percent: (double.parse((snapshot.data!.memoria / 1000)
+                                  .toStringAsFixed(0)) /
+                              100),
+                          center: new Text((snapshot.data!.memoria / 1000)
+                                  .toStringAsFixed(0) +
+                              "%"),
                           progressColor: Colors.orange,
                           footer: new Text("RAM",
                               style: new TextStyle(
@@ -100,7 +118,7 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                   ),
                   Container(
                     height: 60,
-                    color: Color.fromARGB(255, 54, 94, 206),
+                    color: Color.fromARGB(164, 57, 94, 196),
                     child: Center(
                         child: Text(
                       'Nombre del Servidor: \n ' + snapshot.data!.nombre,
@@ -111,7 +129,7 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                   ),
                   Container(
                     height: 60,
-                    color: Color.fromARGB(255, 54, 171, 206),
+                    color: Color.fromARGB(164, 54, 171, 206),
                     child: Center(
                         child: Text(
                       'Fecha Monitoreo:' +
@@ -135,7 +153,9 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                         ? Colors.yellow
                         : snapshot.data!.estado == "danger"
                             ? Colors.red
-                            : Colors.green,
+                            : snapshot.data!.estado == "Empty"
+                                ? Colors.red
+                                : Colors.green,
                     child: Center(
                         child: Text(snapshot.data!.estado,
                             textAlign: TextAlign.center,

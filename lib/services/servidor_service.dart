@@ -64,7 +64,7 @@ class Servidor_Service {
   //*** Metodo para obtener Monitoreo Servidor
   static Future<MonitoreoServidor_Model> monitoreoServidor(
       String codServer) async {
-    var url = Uri.parse(_baseURL + "MonitoreoDashboard11/" + codServer);
+    var url = Uri.parse(_baseURL + "MonitoreoServer/" + codServer);
     final response = await http.get(url);
     MonitoreoServidor_Model monitoreoActual =
         MonitoreoServidor_Model("", "", DateTime.now(), 0, 0, 0, "");
@@ -72,16 +72,22 @@ class Servidor_Service {
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
 
+      if (body.isEmpty) {
+        print("Fallo porque el body viene vacio");
+        return MonitoreoServidor_Model(
+            "Empty", "Empty", DateTime.now(), 0, 0, 0, "Empty");
+      }
+
       final jsonData = jsonDecode(body);
 
-      monitoreoActual.servidor = jsonData["servidor"];
-      monitoreoActual.nombre = jsonData["nombre"];
+      monitoreoActual.servidor = jsonData["codServidor"];
+      monitoreoActual.nombre = jsonData["nombServidor"];
       monitoreoActual.fechaMonitoreo =
           DateTime.parse(jsonData["fechaMonitoreo"]);
-      monitoreoActual.estado = jsonData["estado"];
-      monitoreoActual.cpu = int.parse(jsonData["cpu"].toString());
-      monitoreoActual.memoria = int.parse(jsonData["memoria"].toString());
-      monitoreoActual.espacio = int.parse(jsonData["espacio"].toString());
+      monitoreoActual.estado = jsonData["estadoParam"];
+      monitoreoActual.cpu = int.parse(jsonData["usoCpu"].toString());
+      monitoreoActual.memoria = int.parse(jsonData["usoMemoria"].toString());
+      monitoreoActual.espacio = int.parse(jsonData["usoEspacio"].toString());
 
       return monitoreoActual;
     } else {
