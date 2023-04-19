@@ -205,9 +205,12 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
                 onTap: () {
                   StaticC.idServidor = snapshot.data![index]
                       .codServidor; //aqui guardamos el id seleccionado
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => MonitoreoServidor()));
-                  //DetallarServidor(snapshot.data![index])));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              // MonitoreoServidor()));
+                              DetallarServidor(snapshot.data![index])));
                 },
                 onLongPress: () {},
                 title: Text(snapshot.data![index].codServidor),
