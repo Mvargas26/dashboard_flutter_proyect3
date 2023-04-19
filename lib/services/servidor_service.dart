@@ -72,6 +72,12 @@ class Servidor_Service {
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
 
+      if (body.isEmpty) {
+        print("Fallo porque el body viene vacio");
+        return MonitoreoServidor_Model(
+            "Empty", "Empty", DateTime.now(), 0, 0, 0, "Empty");
+      }
+
       final jsonData = jsonDecode(body);
 
       monitoreoActual.servidor = jsonData["codServidor"];

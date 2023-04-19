@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_progra/screens/detallarServidor.dart';
+import 'package:proyecto_progra/screens/monitoreoServidor.dart';
 import 'package:proyecto_progra/services/staticC.dart';
 
 import '../models/servidor_model.dart';
@@ -20,6 +21,7 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
   @override
   void initState() {
     super.initState();
+    listadoServidores = Servidor_Service.getServidores();
   }
 
   @override
@@ -203,11 +205,9 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
                 onTap: () {
                   StaticC.idServidor = snapshot.data![index]
                       .codServidor; //aqui guardamos el id seleccionado
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              DetallarServidor(snapshot.data![index])));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => MonitoreoServidor()));
+                  //DetallarServidor(snapshot.data![index])));
                 },
                 onLongPress: () {},
                 title: Text(snapshot.data![index].codServidor),
@@ -228,14 +228,12 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
                   _asynCall = false;
                 });
               },
-              child: Text("Ver Servidores"),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
           );
         }
-        //Mientras es una u otra muestra la ruedita
-        return Center(
-          child: CircularProgressIndicator(),
-        );
       },
     );
   }
