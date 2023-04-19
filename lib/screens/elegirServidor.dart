@@ -24,29 +24,50 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: createBody()
-        // Container(
+    return Scaffold(
+      
+      
+      appBar: AppBar(
+        title: Text('Usuario',
+            style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(129, 139, 66, 121).withOpacity(0.4)
+                )
+                ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.severe_cold_rounded),
+            onPressed: () {
+              Navigator.pushNamed(context, 'mantenimientoServidor');
+              
+            },
+          ),
+        ],
+      ),
+      body: 
+         Container(
 
         //   //se usa para poner el fondo
-        //   width: MediaQuery.of(context).size.width,
-        //   height: MediaQuery.of(context).size.height,
-        //   decoration: BoxDecoration(
-        //     gradient: new LinearGradient(
-        //       colors: [
-        //         Color.fromARGB(129, 139, 66, 121).withOpacity(0.4),
-        //         Color.fromARGB(129, 139, 66, 121).withOpacity(0.4),
-        //       ],
-        //     ),
-        //   ),
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     children: [
-        //       Expanded(child: mantenimiento(context)),
-        //       Expanded(child: mantenimiento2(context)),
-        //     ],
-        //   ),
-        // ),
+           width: MediaQuery.of(context).size.width,
+           height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+          gradient: new LinearGradient(
+             colors: [
+               Color.fromARGB(129, 255, 255, 255).withOpacity(0.4),
+                 Color.fromARGB(129, 255, 255, 255).withOpacity(0.4),
+               ],
+           ),
+         ),
+         child: Column(
+           mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+             Expanded(child: createBody()),
+           
+          ],
+            ),
+         ),
         );
   }
 
@@ -119,6 +140,10 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
       ),
     );
   }
+
+
+
+
 
   Widget mantenimiento2(BuildContext context) {
     return SizedBox(
@@ -239,4 +264,7 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
       },
     );
   }
+
+
+
 }//fin class
