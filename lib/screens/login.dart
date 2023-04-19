@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import '../widget/HeaderWidget.dart';
 import '../widget/TextFieldCustom.dart';
@@ -66,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
               type: TextInputType.text,
               pass: false,
               texto: 'Usuario',
-              controller: _idController),
+              controller: _passController),
           SizedBox(
             height: 25,
           ),
@@ -110,11 +112,10 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       margin: EdgeInsets.all(2),
       child: TextButton(
-        onPressed: () {
-          setState(() {
-            _saving = true;
-          });
-          Navigator.pushNamed(context, 'elegirServidor');
+        onPressed:(){
+          String user = _idController.text;
+          String pass = _passController.text;
+          login(context, user, pass); // Pasar los valores ingresados al método de inicio de sesión
         },
         child: Text(
           'Iniciar sesión',
@@ -144,6 +145,58 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+Future<void> login(BuildContext context, String user, String pass) async {
+  final String apiUrl = 'http://localhost:5021/iniciar/sesion/'; // Reemplaza con la URL de tu mini API
+  final Map<String, String> headers = {'Content-Type': 'application/json'};
+  final Map<String, String> body = {'nombUser': user, 'passUser': pass};
+
+  final response = await http.post(Uri.parse(apiUrl), headers: headers, body: json.encode(body));
+
+  if (response.statusCode == 200) {
+    // Si la respuesta es exitosa (código 200)
+    final Map<String, dynamic> data = json.decode(response.body);
+    
+    // Mostrar mensaje satisfactorio
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Inicio de sesión exitoso'),
+          content: Text('¡Bienvenido! $user'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                // Redirigir a otra página
+                Navigator.pushNamed(context, 'elegirServidor'); // Reemplaza '/home' con la ruta de la página de destino
+              },
+              child: Text('Continuar'),
+            ),
+          ],
+        );
+      },
+    );
+  } else {
+    // Si la respuesta es incorrecta, mostrar mensaje de error
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error en el inicio de sesión'),
+          content: Text('Usuario y/o contraseña incorrectos.'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
