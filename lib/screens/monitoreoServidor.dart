@@ -118,7 +118,7 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                   ),
                   Container(
                     height: 60,
-                    color: Color.fromARGB(255, 54, 94, 206),
+                    color: Color.fromARGB(164, 57, 94, 196),
                     child: Center(
                         child: Text(
                       'Nombre del Servidor: \n ' + snapshot.data!.nombre,
@@ -129,7 +129,7 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                   ),
                   Container(
                     height: 60,
-                    color: Color.fromARGB(255, 54, 171, 206),
+                    color: Color.fromARGB(164, 54, 171, 206),
                     child: Center(
                         child: Text(
                       'Fecha Monitoreo:' +
