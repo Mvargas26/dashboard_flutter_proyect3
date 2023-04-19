@@ -153,7 +153,9 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                         ? Colors.yellow
                         : snapshot.data!.estado == "danger"
                             ? Colors.red
-                            : Colors.green,
+                            : snapshot.data!.estado == "Empty"
+                                ? Colors.red
+                                : Colors.green,
                     child: Center(
                         child: Text(snapshot.data!.estado,
                             textAlign: TextAlign.center,
