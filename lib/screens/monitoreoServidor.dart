@@ -112,10 +112,7 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                       ],
                     ),
                   ),
-                  Container(
-                    height: 50,
-                    color: Color.fromARGB(255, 243, 242, 243),
-                  ),
+                  const SizedBox(height: 60),
                   Container(
                     height: 60,
                     color: Color.fromARGB(164, 57, 94, 196),
@@ -127,6 +124,7 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     )),
                   ),
+                  const SizedBox(height: 10),
                   Container(
                     height: 60,
                     color: Color.fromARGB(164, 54, 171, 206),
@@ -163,6 +161,44 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold))),
                   ),
+                  const SizedBox(height: 60),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned.fill(
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: <Color>[
+                                      Color(0xFF0D47A1),
+                                      Color(0xFF1976D2),
+                                      Color(0xFF42A5F5),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.all(16.0),
+                                textStyle: const TextStyle(fontSize: 20),
+                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, 'detalleServicios');
+                              },
+                              child: const Text('Servicios'),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
