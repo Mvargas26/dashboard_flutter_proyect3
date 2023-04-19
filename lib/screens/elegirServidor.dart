@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_progra/screens/detallarServidor.dart';
+import 'package:proyecto_progra/services/staticC.dart';
+
+import '../models/servidor_model.dart';
+import '../services/servidor_service.dart';
 
 class ElegirSeridorPage extends StatefulWidget {
   const ElegirSeridorPage({super.key});
@@ -8,6 +13,10 @@ class ElegirSeridorPage extends StatefulWidget {
 }
 
 class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
+  //VARIABLES
+  Future<List<Servidor_Model>?>? listadoServidores;
+  bool _asynCall = false;
+
   @override
   void initState() {
     super.initState();
@@ -15,29 +24,30 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        //se usa para poner el fondo
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          gradient: new LinearGradient(
-            colors: [
-              Color.fromARGB(129, 139, 66, 121).withOpacity(0.4),
-              Color.fromARGB(129, 139, 66, 121).withOpacity(0.4),
-            ],
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(child: mantenimiento(context)),
-            Expanded(child: mantenimiento2(context)),
-          ],
-        ),
-      ),
-    );
+    return Scaffold(body: createBody()
+        // Container(
+
+        //   //se usa para poner el fondo
+        //   width: MediaQuery.of(context).size.width,
+        //   height: MediaQuery.of(context).size.height,
+        //   decoration: BoxDecoration(
+        //     gradient: new LinearGradient(
+        //       colors: [
+        //         Color.fromARGB(129, 139, 66, 121).withOpacity(0.4),
+        //         Color.fromARGB(129, 139, 66, 121).withOpacity(0.4),
+        //       ],
+        //     ),
+        //   ),
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     crossAxisAlignment: CrossAxisAlignment.center,
+        //     children: [
+        //       Expanded(child: mantenimiento(context)),
+        //       Expanded(child: mantenimiento2(context)),
+        //     ],
+        //   ),
+        // ),
+        );
   }
 
   Widget mantenimiento(BuildContext context) {
@@ -179,4 +189,54 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
       ),
     );
   }
-}
+
+  Widget createBody() {
+    return FutureBuilder(
+      future: listadoServidores,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          //entro aqui si hay datos
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                onTap: () {
+                  StaticC.idServidor = snapshot.data![index]
+                      .codServidor; //aqui guardamos el id seleccionado
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              DetallarServidor(snapshot.data![index])));
+                },
+                onLongPress: () {},
+                title: Text(snapshot.data![index].codServidor),
+                subtitle: Text(snapshot.data![index].nombServidor),
+              );
+            },
+          );
+        } else {
+          //entra aqui si no hay datos
+          return Center(
+            child: TextButton(
+              onPressed: () async {
+                setState(() {
+                  _asynCall = true;
+                });
+                listadoServidores = Servidor_Service.getServidores();
+                setState(() {
+                  _asynCall = false;
+                });
+              },
+              child: Text("Ver Servidores"),
+            ),
+          );
+        }
+        //Mientras es una u otra muestra la ruedita
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+}//fin class
