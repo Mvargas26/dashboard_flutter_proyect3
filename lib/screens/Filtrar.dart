@@ -45,7 +45,19 @@ class _filtrarPageState extends State<filtrarPage> {
             SizedBox(
               height: 20,
             ),
-          
+          SizedBox(
+              height: 20,
+            ),
+            TextButton(
+                onPressed: () => Navigator.pushNamed(context, 'registrarServicio'),
+                child: Text('Servicios',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 33, 34, 42)))),
+            SizedBox(
+              height: 20,
+            ),
            
           ]),
         ),
