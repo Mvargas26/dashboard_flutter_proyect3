@@ -121,6 +121,19 @@ static Future<bool> eliminarServidor(String server ) async {
   }
 
 
+static Future<List<ServidorNombre>> buscarServidor(String nombre) async {
+  var url = Uri.parse(_baseURL + "servidorUmbral/"+nombre+"");
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    List<dynamic> jsonList = json.decode(response.body);
+    List<ServidorNombre> servidorList =
+        jsonList.map((e) => ServidorNombre.fromJson(e)).toList();
+    return servidorList;
+  } else {
+    throw Exception("Fallo");
+  }
+}
+
 }
 
 

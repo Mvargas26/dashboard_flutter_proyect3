@@ -91,6 +91,7 @@ class _MantenimientoServiidorPageState
          child: SizedBox(
   child: Stack(
     children: [
+            _inputBuscar(),
             _createBody("Nombre del servidor")
             ],
          
@@ -130,20 +131,7 @@ class _MantenimientoServiidorPageState
                     Text(snapshot.data![index].porcentaje.toString()),
                   ],
                 ),
-                onTap: () {
-                  setState(() {
-                    _servidorController.text = snapshot.data![index].servidor;
-                    _nombreController.text = snapshot.data![index].nombre;
-                    _descripcionController.text =
-                        snapshot.data![index].descripcion;
-                    _admiRegistraController.text = snapshot.data![index].administrador;
-                    _contrasenaController.text = snapshot.data![index].contrasena;
-                    _umbralController.text = snapshot.data![index].umbral;
-                    _codigoomponenteController.text = snapshot.data![index].componente;
-                    _porcentajeController.text = snapshot.data![index].porcentaje.toString();
-                    
-                  });
-                },
+              
               );
             },
           );
@@ -168,6 +156,24 @@ class _MantenimientoServiidorPageState
       },
     );
   }
+
+  Widget _inputBuscar(){
+  return Row(
+    children: [
+      Expanded(
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'Nombre de usuario.',
+          ),
+        ),
+      ),
+      IconButton(
+        icon: Icon(Icons.search_rounded),
+        onPressed: () {},
+      ),
+    ],
+  );
+}
 
     
 
