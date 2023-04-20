@@ -41,7 +41,7 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
           IconButton(
             icon: Icon(Icons.severe_cold_rounded),
             onPressed: () {
-              Navigator.pushNamed(context, 'mantenimientoServidor');
+              Navigator.pushNamed(context, 'filtarServidor');
               
             },
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_progra/screens/Filtrar.dart';
 import 'package:proyecto_progra/screens/detalleServicios.dart';
 import 'package:proyecto_progra/screens/elegirServidor.dart';
 import 'package:proyecto_progra/screens/login.dart';
@@ -28,6 +29,8 @@ class MyApp extends StatelessWidget {
         'registrarServidor': (_) => RegistrarServidorPage(),
         'detalleServicios': (_) => DetalleServicios(),
         'moniServicios': (_) => DetalleServicios(),
+        'filtarServidor':(_)=>filtrarPage(),
+
       },
     );
   }

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_progra/main.dart';
 import 'package:proyecto_progra/models/servidor.dart';
 import 'package:proyecto_progra/models/umbral.dart';
+import '../models/filtrarPorNombreModel.dart';
 import '../models/servidor_model.dart';
 import '/models/servidor_nombreModel.dart';
 import '/services/servidores_umbral.dart';
 import '/widget/TextFieldCustom.dart';
 import '/widget/input.dart';
+import '/services/filtrarServer.dart';
 
 class MantenimientoServiidorPage extends StatefulWidget {
   const MantenimientoServiidorPage({super.key});
@@ -77,37 +79,44 @@ class _MantenimientoServiidorPageState
                 color: Color.fromARGB(255, 255, 255, 255))),
       ),
 
-
-   body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          
-            color:Color.fromARGB(119, 252, 234, 252)
-            
-          
-          ),
-        
-         child: SizedBox(
-  child: Stack(
-    children: [
-            _inputBuscar(),
-            _createBody("Nombre del servidor")
-            ],
-         
+body: Container(
+  width: MediaQuery.of(context).size.width,
+  height: MediaQuery.of(context).size.height,
+  decoration: BoxDecoration(
+    color: Color.fromARGB(119, 252, 234, 252)
+  ),
+  child: SizedBox(
+    child: Stack(
+      children: [
+        Column(
+          children: [
+            // TextField para ingresar el nombre del servidor
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                
+                decoration: InputDecoration(
+                  hintText: 'Nombre del servidor',
+                ),
+              ),
+            ),
+            // Botón para filtrar los servidores por nombre
+           
+            SizedBox(height: 20),
+            Expanded(
+              child: _createBody('Nombre del servidor'),
+            ),
+          ],
+        ),
+      ],
+    ),
   ),
 ),
 
-
-
-
-
-        ),
       
     );
   }
 
-  @override
   Widget _createBody(String nombreServidor) {
     return FutureBuilder(
       future: Umbral_Service.getNombre(),
@@ -157,23 +166,8 @@ class _MantenimientoServiidorPageState
     );
   }
 
-  Widget _inputBuscar(){
-  return Row(
-    children: [
-      Expanded(
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: 'Nombre de usuario.',
-          ),
-        ),
-      ),
-      IconButton(
-        icon: Icon(Icons.search_rounded),
-        onPressed: () {},
-      ),
-    ],
-  );
-}
+ 
+
 
     
 
