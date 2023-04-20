@@ -271,7 +271,7 @@ class _RegistrarParametrosPageState extends State<RegistrarParametrosPage> {
       Navigator.pop(context, c);
     } else {
       final snackBar = SnackBar(
-        content: Text('Error creando correo'),
+        content: Text('Error creando el parametro'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       setState(() {
@@ -311,13 +311,13 @@ void _actualizarusuario() async {
 
     if (await Umbral_Service.ediparametro(c)) {
       final snackBar = SnackBar(
-        content: Text('Correo actualizado con éxito'),
+        content: Text('Parametro actualizado con éxito'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.pop(context, ' ');
     } else {
       final snackBar = SnackBar(
-        content: Text('Error actualizando correo'),
+        content: Text('Error actualizando parametro'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }

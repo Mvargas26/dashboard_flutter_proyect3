@@ -9,15 +9,13 @@ import '/widget/TextFieldCustom.dart';
 import '/widget/input.dart';
 
 class RegistrarServidorPage extends StatefulWidget {
-  const RegistrarServidorPage ({super.key});
+  const RegistrarServidorPage({super.key});
 
   @override
-  State<RegistrarServidorPage > createState() =>
-      _RegistrarServidorPageState();
+  State<RegistrarServidorPage> createState() => _RegistrarServidorPageState();
 }
 
-class _RegistrarServidorPageState
-    extends State<RegistrarServidorPage > {
+class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
   Future<List<ServidorNombre>>? servidor;
   bool _asyncCall = false;
   bool _activo = false;
@@ -26,10 +24,9 @@ class _RegistrarServidorPageState
   final _descripcionController = new TextEditingController();
   final _admiRegistraController = new TextEditingController();
   final _contrasenaController = new TextEditingController();
-  final _codigoomponenteController = new TextEditingController();  
+  final _codigoomponenteController = new TextEditingController();
   final _umbralController = new TextEditingController();
-  
-  
+
   final _porcentajeController = new TextEditingController();
   bool _saving = false;
 
@@ -51,13 +48,13 @@ class _RegistrarServidorPageState
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              //_eliminarCorreo();
+             _eliminarServidor();
             },
           ),
           IconButton(
             icon: Icon(Icons.update),
             onPressed: () {
-              // _actualizarusuario();
+              _actualizarServidor();
             },
           ),
         ],
@@ -65,7 +62,8 @@ class _RegistrarServidorPageState
           builder: (BuildContext context) {
             return IconButton(
               icon: Icon(Icons.list_alt_rounded,
-                  color: Color.fromARGB(255, 255, 255, 255), size: 30), // Tamaño de 30
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  size: 30), // Tamaño de 30
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
@@ -73,58 +71,34 @@ class _RegistrarServidorPageState
           },
         ),
       ),
-
-
-   body: Container(
+      body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          
-            color:Color.fromARGB(119, 252, 234, 252)
-            
-          
-          ),
-        
-         child: SizedBox(
-  child: Stack(
-    children: [
-      SizedBox(
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
+        decoration: BoxDecoration(color: Color.fromARGB(119, 252, 234, 252)),
+        child: SizedBox(
+          child: Stack(
             children: [
-              _inputServidor(context),
-              _inputNombre(context),
-              _inputDescrpcion(context),
-              _inputadmi(context),
-              _inputpass(context),
-              _registrar(context),
-            
+              SizedBox(
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _inputServidor(context),
+                      _inputNombre(context),
+                      _inputDescrpcion(context),
+                      _inputadmi(context),
+                      _inputpass(context),
+                      _registrar(context),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
-    ],
-  ),
-),
-
-
-
-
-
-        ),
-      
     );
   }
-
-
-
-
-
-
-
-
-   
 
   @override
   Widget _createBody(String nombreServidor) {
@@ -145,7 +119,6 @@ class _RegistrarServidorPageState
                     Text(snapshot.data![index].descripcion),
                     Text(snapshot.data![index].administrador),
                     Text(snapshot.data![index].contrasena),
-                  
                   ],
                 ),
                 onTap: () {
@@ -154,10 +127,10 @@ class _RegistrarServidorPageState
                     _nombreController.text = snapshot.data![index].nombre;
                     _descripcionController.text =
                         snapshot.data![index].descripcion;
-                    _admiRegistraController.text = snapshot.data![index].administrador;
-                    _contrasenaController.text = snapshot.data![index].contrasena;
-                  
-                    
+                    _admiRegistraController.text =
+                        snapshot.data![index].administrador;
+                    _contrasenaController.text =
+                        snapshot.data![index].contrasena;
                   });
                 },
               );
@@ -185,10 +158,9 @@ class _RegistrarServidorPageState
     );
   }
 
- Widget _inputServidor(BuildContext context) {
+  Widget _inputServidor(BuildContext context) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.0),
-
         child: Column(children: [
           SizedBox(
             height: 12,
@@ -197,32 +169,29 @@ class _RegistrarServidorPageState
               type: TextInputType.text,
               pass: false,
               texto: 'Codigo del servidor',
-              controller:_servidorController),
+              controller: _servidorController),
           SizedBox(
             height: 15,
           ),
         ]));
   }
-
 
   Widget _inputNombre(BuildContext context) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(children: [
           TextFieldCustom1(
-            
               type: TextInputType.text,
               pass: false,
               texto: 'Nombre del servidor',
-              controller:_nombreController),
+              controller: _nombreController),
           SizedBox(
             height: 15,
           ),
         ]));
   }
 
-
-Widget _inputDescrpcion(BuildContext context) {
+  Widget _inputDescrpcion(BuildContext context) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(children: [
@@ -230,14 +199,14 @@ Widget _inputDescrpcion(BuildContext context) {
               type: TextInputType.text,
               pass: false,
               texto: 'Descripción del servidor',
-              controller:_descripcionController),
+              controller: _descripcionController),
           SizedBox(
             height: 15,
           ),
         ]));
   }
 
-Widget _inputadmi(BuildContext context) {
+  Widget _inputadmi(BuildContext context) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(children: [
@@ -245,14 +214,14 @@ Widget _inputadmi(BuildContext context) {
               type: TextInputType.text,
               pass: false,
               texto: 'Usaurio Administrador',
-              controller:_admiRegistraController),
+              controller: _admiRegistraController),
           SizedBox(
             height: 15,
           ),
         ]));
   }
 
-Widget _inputpass(BuildContext context) {
+  Widget _inputpass(BuildContext context) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(children: [
@@ -260,14 +229,14 @@ Widget _inputpass(BuildContext context) {
               type: TextInputType.text,
               pass: false,
               texto: 'Contraseña',
-              controller:_contrasenaController),
+              controller: _contrasenaController),
           SizedBox(
             height: 15,
           ),
         ]));
   }
 
- Widget _registrar(BuildContext context) {
+  Widget _registrar(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(2),
       child: TextButton(
@@ -275,7 +244,7 @@ Widget _inputpass(BuildContext context) {
           setState(() {
             _saving = true;
           });
-         
+
           _crearservidor();
 
           Navigator.pushNamed(context, 'elegirServidor');
@@ -312,14 +281,17 @@ Widget _inputpass(BuildContext context) {
   }
 
   void _crearservidor() async {
-    
-  var c = ServidoresR(codServidor: '', descServidor: '', nombServidor: '', passServidor: '', userAdmiServidor: '');
-  c.codServidor = _servidorController.text;
-  c.nombServidor = _nombreController.text;
-  c.descServidor = _descripcionController.text;
-  c.passServidor = _contrasenaController.text;
-  c.userAdmiServidor=_admiRegistraController.text;
-
+    var c = ServidoresR(
+        codServidor: '',
+        descServidor: '',
+        nombServidor: '',
+        passServidor: '',
+        userAdmiServidor: '');
+    c.codServidor = _servidorController.text;
+    c.nombServidor = _nombreController.text;
+    c.descServidor = _descripcionController.text;
+    c.passServidor = _contrasenaController.text;
+    c.userAdmiServidor = _admiRegistraController.text;
 
     if (await Umbral_Service.createServidor(c)) {
       final snackBar = SnackBar(
@@ -338,15 +310,19 @@ Widget _inputpass(BuildContext context) {
     }
   }
 
-
 //atualizar
-void _actualizarServidor() async {
-   var c = ServidoresR(codServidor: '', descServidor: '', nombServidor: '', passServidor: '', userAdmiServidor: '');
-  c.codServidor = _servidorController.text;
-  c.nombServidor = _nombreController.text;
-  c.descServidor = _descripcionController.text;
-  c.passServidor = _contrasenaController.text;
-  c.userAdmiServidor=_admiRegistraController.text;
+  void _actualizarServidor() async {
+    var c = ServidoresR(
+        codServidor: '',
+        descServidor: '',
+        nombServidor: '',
+        passServidor: '',
+        userAdmiServidor: '');
+    c.codServidor = _servidorController.text;
+    c.nombServidor = _nombreController.text;
+    c.descServidor = _descripcionController.text;
+    c.passServidor = _contrasenaController.text;
+    c.userAdmiServidor = _admiRegistraController.text;
 
     if (await Umbral_Service.editarServidor(c)) {
       final snackBar = SnackBar(
@@ -356,18 +332,29 @@ void _actualizarServidor() async {
       Navigator.pop(context, '');
     } else {
       final snackBar = SnackBar(
-        content: Text('Error actualizando el servidor'),
+        content: Text('Servidor actualizado con éxito'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
-
- 
-
-
+//Eliminar
+  void _eliminarServidor() async {
+    String server = _servidorController.text;
+    bool resultado = await Umbral_Service.eliminarServidor(server);
+    if (resultado) {
+      final snackBar = SnackBar(
+        content: Text('Servidor eliminado con éxito'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.pop(
+          context); // me manda a la pagina anterior es decir a la de contacto
+    } else {
+      final snackBar = SnackBar(
+        content: Text('Error eliminando el servidor'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      // Agregue esta línea
+    }
+  }
 }
-
-
-
-

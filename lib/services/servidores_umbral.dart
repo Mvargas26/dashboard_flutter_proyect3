@@ -10,8 +10,9 @@ class Umbral_Service {
   //VARIABLES
   static String _baseURL = 'http://10.0.2.2:5021/';
 
-  //*** Metodo para obtener Usuarios
 
+
+  //*** Metodo para obtener Seervidor
 static Future<List<ServidorNombre>> getNombre() async {
   var url = Uri.parse(_baseURL + "servidorUmbral1");
   final response = await http.get(url);
@@ -25,6 +26,8 @@ static Future<List<ServidorNombre>> getNombre() async {
   }
 }
 
+
+//*** Metodo para Crear parametro
 static Future<bool> createUmbral(Umbral c) async{
   var url =Uri.parse(_baseURL+"paramSensibilidad");
   final response= await http.post(url, headers:<String, String>{
@@ -38,7 +41,7 @@ static Future<bool> createUmbral(Umbral c) async{
   }
 }
 
-
+//*** Metodo para Crear servidor
 static Future<bool> createServidor(ServidoresR c) async{
   var url =Uri.parse(_baseURL+"Servidor");
   final response= await http.post(url, headers:<String, String>{
@@ -52,11 +55,12 @@ static Future<bool> createServidor(ServidoresR c) async{
   }
 }
 
+
+//*** Metodo para Eliminar parametro
 static Future<bool> eliminarUmbral(String server, String umbral, String componente ) async {
     var url =
         Uri.parse(_baseURL + "paramSensibilidad/"+server+"/"+umbral+"/"+componente+"");
-//http://localhost:5021/paramSensibilidad/prueba/alert/CO1
-      
+   
     final response = await http.delete(url);
     if (response.statusCode == 200) {
       return true;
@@ -101,6 +105,21 @@ static Future<bool> eliminarUmbral(String server, String umbral, String componen
       return false;
     }
   } //fn sevidor
+
+
+  //*** Metodo para Eliminar parametro
+static Future<bool> eliminarServidor(String server ) async {
+    var url =
+        Uri.parse(_baseURL + "del_Servicios+ /"+server+"");
+   
+    final response = await http.delete(url);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
 }
 
