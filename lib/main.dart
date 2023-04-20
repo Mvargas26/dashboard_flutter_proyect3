@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         // 'mantenimientoServicio': (_) => MantenimientoServicioPage(),
         'mantenimientoServidor': (_) => MantenimientoServiidorPage(),
         'registrarParametros': (_) => RegistrarParametrosPage(),
-        'registrarServicio': (_) => RegistroServicioPage(),
+        //'registrarServicio': (_) => RegistroServicioPage(),
         'registrarServidor': (_) => RegistrarServidorPage(),
         'detalleServicios': (_) => DetalleServicios(),
         'moniServicios': (_) => DetalleServicios(),

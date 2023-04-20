@@ -112,20 +112,11 @@ class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
           return ListView.builder(
             itemCount: snapshot.data?.length,
             itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(snapshot.data![index].codServidor),
-                    Text(snapshot.data![index].nombServidor),
-                    Text(snapshot.data![index].descServidor),
-                    Text(snapshot.data![index].userAdmiServidor),
-                    Text(snapshot.data![index].passServidor),
-                  ],
-                ),
+              return GestureDetector(
                 onTap: () {
                   setState(() {
-                    _servidorController.text = snapshot.data![index].codServidor;
+                    _servidorController.text =
+                        snapshot.data![index].codServidor;
                     _nombreController.text = snapshot.data![index].nombServidor;
                     _descripcionController.text =
                         snapshot.data![index].descServidor;
@@ -135,6 +126,36 @@ class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
                         snapshot.data![index].passServidor;
                   });
                 },
+                child: Card(
+                  color: Color.fromARGB(255, 204, 170, 195).withOpacity(0.4),
+                  elevation: 4.0,
+                  margin: EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(snapshot.data![index].codServidor,
+                            style: TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.bold)),
+                        Text(snapshot.data![index].nombServidor,
+                            style: TextStyle(fontSize: 16.0)),
+                        Text(snapshot.data![index].descServidor,
+                            style: TextStyle(fontSize: 16.0)),
+                        Text("Usuario administrador: ",
+                            style: TextStyle(fontSize: 16.0)),
+                        Text(snapshot.data![index].userAdmiServidor,
+                            style: TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.bold)),
+                        Text("Contraseña: ", style: TextStyle(fontSize: 16.0)),
+                        Text(snapshot.data![index].passServidor,
+                            style: TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 8.0),
+                      ],
+                    ),
+                  ),
+                ),
               );
             },
           );
@@ -155,7 +176,8 @@ class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
             ),
           );
         }
-        //Mientras es una u otra muestra la ruedita
+      
+      
       },
     );
   }

@@ -22,7 +22,19 @@ class _DetalleServiciosState extends State<DetalleServicios> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: createBody());
+    return Scaffold(
+         appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
+        title: Text('Servicios',
+            style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 228, 228, 228))),
+        
+      ),
+      
+      
+      body: createBody());
   }
 
   // **** METODOS ****
@@ -58,52 +70,64 @@ class _DetalleServiciosState extends State<DetalleServicios> {
     );
   }
 
-  Widget createBody() {
-    return FutureBuilder(
-      future: listadoServicios,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          //entro aqui si hay datos
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                onTap: () {
-                  StaticC.idServicio = snapshot.data![index].codServicio;
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              // MonitoreoServidor()));
-                              MonitoreoServicios()));
-                },
-                onLongPress: () {},
-                title: Text(snapshot.data![index].codServicio),
-                subtitle: Text(snapshot.data![index].nombServicio),
-              );
-            },
-          );
-        } else {
-          //entra aqui si no hay datos
-          return Center(
-            child: TextButton(
-              onPressed: () async {
-                setState(() {
-                  _asynCall = true;
-                });
-                listadoServicios =
-                    ServiciosService.getServiciosID(StaticC.idServidor);
-                setState(() {
-                  _asynCall = false;
-                });
+ Widget createBody() {
+  return FutureBuilder(
+    future: listadoServicios,
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        //entro aqui si hay datos
+        return GridView.count(
+          crossAxisCount: 2,
+          childAspectRatio: 1,
+          children: List.generate(snapshot.data!.length, (index) {
+            return GestureDetector(
+              onTap: () {
+                StaticC.idServicio = snapshot.data![index].codServicio;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MonitoreoServicios(),
+                  ),
+                );
               },
-              child: Center(
-                child: CircularProgressIndicator(),
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Card(
+                  color: Color.fromARGB(129, 233, 179, 219).withOpacity(0.3), 
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(snapshot.data![index].codServicio),
+                      Text(snapshot.data![index].nombServicio),
+                    ],
+                  ),
+                ),
               ),
+            );
+          }),
+        );
+      } else {
+        //entra aqui si no hay datos
+        return Center(
+          child: TextButton(
+            onPressed: () async {
+              setState(() {
+                _asynCall = true;
+              });
+              listadoServicios =
+                  ServiciosService.getServiciosID(StaticC.idServidor);
+              setState(() {
+                _asynCall = false;
+              });
+            },
+            child: Center(
+              child: CircularProgressIndicator(),
             ),
-          );
-        }
-      },
-    );
-  }
+          ),
+        );
+      }
+    },
+  );
+}
+
 }

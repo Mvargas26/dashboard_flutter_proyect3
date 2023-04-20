@@ -132,6 +132,7 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
               ),
             ),
             appBar: new AppBar(
+              backgroundColor: Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
               title: new Text(
                   "Monitoreo del Servidor : " + "\n" + snapshot.data!.nombre),
             ),

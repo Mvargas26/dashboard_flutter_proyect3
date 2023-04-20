@@ -44,14 +44,29 @@ class _MantenimientoServiidorPageState
             SizedBox(
               height: 60,
             ),
-            TextButton(
-                onPressed: () =>
-                    Navigator.pushNamed(context, 'registrarParametros'),
-                child: Text('Parametros de sensibilidad',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 33, 34, 42)))),
+           TextButton(
+          onPressed: () => Navigator.pushNamed(context, 'registrarParametros'),
+          child: Text(
+            'Parametros de sensibilidad',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 33, 34, 42),
+            ),
+          ),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+              Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
+            ),
+            overlayColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) {
+              if (states.contains(MaterialState.pressed)) {
+                return Color.fromARGB(255, 244, 214, 236).withOpacity(0.4);
+              }
+              return Color.fromARGB(255, 125, 55, 107).withOpacity(0.4);
+            }),
+          ),
+        ),
             SizedBox(
               height: 20,
             ),
@@ -62,7 +77,12 @@ class _MantenimientoServiidorPageState
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 33, 34, 42)))),
+                        color: Color.fromARGB(255, 33, 34, 42)))
+                        
+                        
+                        
+                        
+                        ),
             SizedBox(
               height: 20,
             ),

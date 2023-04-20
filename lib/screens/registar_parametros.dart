@@ -97,37 +97,51 @@ class _RegistrarParametrosPageState extends State<RegistrarParametrosPage> {
   }
 
   Widget _createBody(String nombreServidor) {
-    return FutureBuilder(
-      future: Umbral_Service.getNombre(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          //entro aqui si hay datos
-          return ListView.builder(
-            itemCount: snapshot.data?.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(snapshot.data![index].servidor),
-                    Text(snapshot.data![index].umbral),
-                    Text(snapshot.data![index].componente),
-                    Text(snapshot.data![index].porcentaje.toString()),
-                  ],
+     return FutureBuilder(
+    future: Umbral_Service.getNombre(),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        //entro aqui si hay datos
+        return ListView.builder(
+          itemCount: snapshot.data?.length,
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  _servidorController.text = snapshot.data![index].servidor;
+                  _umbralController.text = snapshot.data![index].umbral;
+                  _codigoomponenteController.text =
+                      snapshot.data![index].componente;
+                  _porcentajeController.text =
+                      snapshot.data![index].porcentaje.toString();
+                });
+              },
+              child: Card(
+                color: Color.fromARGB(255, 204, 170, 195).withOpacity(0.4),
+                elevation: 4.0,
+                margin: EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(snapshot.data![index].servidor,
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold)),
+                      Text(snapshot.data![index].umbral,
+                          style: TextStyle(fontSize: 16.0)),
+                      Text(snapshot.data![index].componente,
+                          style: TextStyle(fontSize: 16.0)),
+                      Text(snapshot.data![index].porcentaje.toString(),
+                          style: TextStyle(fontSize: 16.0)),
+                      SizedBox(height: 8.0),
+                    ],
+                  ),
                 ),
-                onTap: () {
-                  setState(() {
-                    _servidorController.text = snapshot.data![index].servidor;
-                    _umbralController.text = snapshot.data![index].umbral;
-                    _codigoomponenteController.text =
-                        snapshot.data![index].componente;
-                    _porcentajeController.text =
-                        snapshot.data![index].porcentaje.toString();
-                  });
-                },
-              );
-            },
-          );
+              ),
+            );
+          },
+        );
         } else {
           //entra aqui si no hay datos
           return Center(
