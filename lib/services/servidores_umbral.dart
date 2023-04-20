@@ -122,7 +122,9 @@ static Future<List<ServidoresR>> getServidor() async {
 
   //*** Metodo para Eliminar servidor
   static Future<bool> eliminarServidor(String server) async {
-    var url = Uri.parse(_baseURL + "Servidor/" + server + "");
+    var url = Uri.parse(_baseURL + "Servidor/{id}?CodigoServidor="+server);
+
+    
     final response = await http.delete(url);
     if (response.statusCode == 200) {
       return true;
