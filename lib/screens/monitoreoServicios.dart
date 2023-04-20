@@ -1,133 +1,263 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
 import '../models/monitoreoServicio_model.dart';
-import '../models/servicio_model.dart';
-class ServiciosService {
-//VARIABLES
-  //static String _baseURL = 'http://apiprogra.somee.com/';
-  static String _baseURL = 'http://10.0.2.2:5021/';
-  // Metodo para obtener Servicios  por id del servidor
-  static Future<List<Servicio_Modelo>?> getServiciosID(String codServer) async {
-    var url = Uri.parse(_baseURL + "Servicios/" + codServer);
-    final response = await http.get(url);
-    List<Servicio_Modelo> Servicios = [];
-    if (response.statusCode == 200) {
-      String body = utf8.decode(response.bodyBytes);
-      final jsonData = jsonDecode(body);
-      //print(jsonData[1]["c"]["codServicio"]);
-      if (body.isEmpty) {
-        print("Fallo porque el body viene vacio");
-        Servicios.add(
-            Servicio_Modelo("Empty", "Empty", "Empty", "Empty", "Empty", 0));
-        return Servicios;
-      }
-      for (var i = 0; i < jsonData.length; i++) {
-        Servicios.add(Servicio_Modelo(
-            jsonData[i]["c"]["codServicio"],
-            jsonData[i]["c"]["nombServicio"],
-            jsonData[i]["c"]["descServicio"],
-            jsonData[i]["c"]["tipoServicio"],
-            jsonData[i]["c"]["servidorPertenece"],
-            int.parse(jsonData[i]["c"]["timeOut"].toString())));
-      }
-      return Servicios;
-    } else if (response.statusCode == 404 || response.statusCode == 404) {
-      Servicios.add(Servicio_Modelo(
-          "Error 404", "Servicio no encontrado", "", "", "", 0));
-      return Servicios;
-    } else {
-      print("Fallo porque el body viene vacio");
-      Servicios.add(
-          Servicio_Modelo("Empty", "Empty", "Empty", "Empty", "Empty", 0));
-      return Servicios;
-    }
-  } //fn getServidorID
-//Monitoreo de un servicio
-  static Future<MonitoreoServicio_Model> monitoreoServicio(
-      String codServer, String codServicio) async {
-    var url = Uri.parse(
-        _baseURL + "monitoreoServicio/" + codServer + "/" + codServicio);
-    final response = await http.get(url);
-    MonitoreoServicio_Model monitoreoActual =
-        MonitoreoServicio_Model("", "", 0, DateTime.now(), "", 0);
-    if (response.statusCode == 200) {
-      String body = utf8.decode(response.bodyBytes);
-      if (body.isEmpty) {
-        print("Fallo porque el body viene vacio");
-        return MonitoreoServicio_Model(
-            "Empty", "Empty", 0, DateTime.now(), "Empty", 0);
-      }
-      final jsonData = jsonDecode(body);
-      monitoreoActual.servidorPertenece = jsonData["servidorPertenece"];
-      monitoreoActual.idServicio = jsonData["idServicio"];
-      monitoreoActual.fechaMoniServicio =
-          DateTime.parse(jsonData["fechaMoniServicio"]);
-      monitoreoActual.estadoServicio =
-          int.parse(jsonData["estadoServicio"].toString());
-      monitoreoActual.timeOutServicio =
-          int.parse(jsonData["timeOutServicio"].toString());
-      monitoreoActual.estadoParam = jsonData["estadoParam"];
-      return monitoreoActual;
-    } else {
-      throw Exception("***** Fallo Monitoreo Servicio ");
-    }
-  } //fn monitoreoServicio
-//Activar Notificacion de Un Servicio
-  static Future<String> activarNotifiServicio(
-      String user, String codServicio) async {
-    var url = Uri.parse(_baseURL +
-        "Servicios/ActivarNotificacionServicio?user=" +
-        user +
-        "&codServicio=" +
-        codServicio);
-    final response = await http.put(url);
-    print(response.body);
-    if (response.statusCode == 200) {
-      // Si la respuesta es exitosa, decodificamos los datos JSON y los retornamos
-      return "Alertas Activadas";
-    } else {
-      // Si la respuesta no es exitosa, lanzamos una excepción con el mensaje de error
-      return response.body.toString();
-    }
-  } //fn
-  //Desactivar Notificacion de Un Servicio
-  static Future<String> desactivarNotifiServicio(
-      String user, String codServicio) async {
-    var url = Uri.parse(_baseURL +
-        "Servicios/DesactivarNotificacionServicio?user=" +
-        user +
-        "&codServicio=" +
-        codServicio);
-    final response = await http.put(url);
-    print(response.body[1]);
-    if (response.statusCode == 200) {
-      // Si la respuesta es exitosa, decodificamos los datos JSON y los retornamos
-      return "Alertas Desactivadas";
-    } else {
-      // Si la respuesta no es exitosa, lanzamos una excepción con el mensaje de error
-      return response.body.toString();
-    }
-  } //fn
+import '../services/servicios_service.dart';
+import '../services/staticC.dart';
 
-  //Notificar Encargados
-  static Future<String> notificarEncargados(
-      String codServicio, String idServer) async {
-    var url = Uri.parse(
-        _baseURL + "correo/encargado/servicio?servBuscar=" + codServicio);
-    Map<String, String> correo = {
-      'asunto': "Problema en el servidor " + idServer,
-      'mensaje': "Se han presentado problemas en el servidor " +
-          idServer +
-          " o uno de sus servicios, favor verificar.",
-    };
-    final response = await http.post(url);
+class MonitoreoServicios extends StatefulWidget {
+  @override
+  State<MonitoreoServicios> createState() => _MonitoreoServiciosState();
+}
 
-    print(response.body[1]);
+class _MonitoreoServiciosState extends State<MonitoreoServicios> {
+  Future<MonitoreoServicio_Model>? monitoreoServidor;
+  bool _asynCall = false;
+  String mensajeResponse = "";
+  @override
+  void initState() {
+    super.initState();
 
-    if (response.statusCode == 200) {
-      return response.body.toString();
-    } else {
-      return response.body.toString();
+    _ejecutarMonitoreoServicios();
+
+    //Esta funcion vuelve a llamar al metodo cada 2 min
+    Timer.periodic(Duration(seconds: 60), (timer) {
+      _ejecutarMonitoreoServicios();
+      print("Se recargo:" + DateTime.now().toString());
+    });
+  }
+
+//////////////////////
+  Future<void> _ejecutarMonitoreoServicios() async {
+    try {
+      setState(() {
+        monitoreoServidor = ServiciosService.monitoreoServicio(
+            StaticC.idServidor, StaticC.idServicio);
+      });
+    } catch (e) {
+      print('Error al obtener Monitoreo Servicios: $e');
     }
-  } //fn
+  }
+
+//////////
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: porcentajes());
+  }
+
+  /////metodos
+  Widget porcentajes() {
+    return FutureBuilder(
+      future: monitoreoServidor,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Scaffold(
+            drawer: Drawer(
+              child: Container(
+                color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.8),
+                child: Column(children: [
+                  SizedBox(
+                    height: 60,
+                  ),
+                  TextButton(
+                      onPressed: () => ServiciosService.activarNotifiServicio(
+                                  StaticC.userActivo, StaticC.idServicio)
+                              .then((resultado) {
+                            // Creamos un AlertDialog con el resultado obtenido
+                            AlertDialog alert = AlertDialog(
+                              title: Text("Mensaje"),
+                              content: Text(resultado),
+                              actions: [
+                                TextButton(
+                                  child: Text("Cerrar"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                            // Mostramos el AlertDialog
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alert;
+                              },
+                            );
+                          }),
+                      child: Text('Activar Notificaciones para este Servicio',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 33, 34, 42)))),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextButton(
+                      onPressed: () =>
+                          ServiciosService.desactivarNotifiServicio(
+                                  StaticC.userActivo, StaticC.idServicio)
+                              .then((resultado) {
+                            // Creamos un AlertDialog con el resultado obtenido
+                            AlertDialog alert = AlertDialog(
+                              title: Text("Mensaje"),
+                              content: Text(resultado),
+                              actions: [
+                                TextButton(
+                                  child: Text("Cerrar"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                            // Mostramos el AlertDialog
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alert;
+                              },
+                            );
+                          }),
+                      child: Text(
+                          'Desactivar Notificaciones para este Servicio',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 33, 34, 42)))),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ]),
+              ),
+            ),
+            appBar: new AppBar(
+              title: new Text("Monitoreo del Servicio : " +
+                  "\n" +
+                  snapshot.data!.idServicio),
+            ),
+            body: Center(
+              child: ListView(
+                children: <Widget>[
+                  const SizedBox(height: 60),
+                  Container(
+                    height: 60,
+                    color: Color.fromARGB(164, 57, 94, 196),
+                    child: Center(
+                        child: Text(
+                      'Nombre del Servicio: \n ' + snapshot.data!.idServicio,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    height: 60,
+                    color: Color.fromARGB(164, 54, 171, 206),
+                    child: Center(
+                        child: Text(
+                      'Fecha Monitoreo:' +
+                          "\n" +
+                          snapshot.data!.fechaMoniServicio.toString(),
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )),
+                  ),
+                  Container(
+                    height: 50,
+                    color: Color.fromARGB(255, 243, 242, 243),
+                    child: Center(
+                      child: Text("Estado del Servidor: "),
+                    ),
+                  ),
+                  Container(
+                    height: 60,
+                    color: snapshot.data!.estadoParam == "alert"
+                        ? Colors.yellow
+                        : snapshot.data!.estadoParam == "danger"
+                            ? Colors.red
+                            : snapshot.data!.estadoParam == "Empty"
+                                ? Colors.red
+                                : Colors.green,
+                    child: Center(
+                        child: Text(snapshot.data!.estadoParam,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold))),
+                  ),
+                  const SizedBox(height: 60),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned.fill(
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: <Color>[
+                                      Color.fromARGB(255, 161, 13, 13),
+                                      Color.fromARGB(255, 210, 25, 25),
+                                      Color.fromARGB(255, 245, 66, 66),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.all(16.0),
+                                textStyle: const TextStyle(fontSize: 20),
+                              ),
+                              onPressed: () {
+                                ServiciosService.notificarEncargados(
+                                        StaticC.idServicio, StaticC.idServidor)
+                                    .then((resultado) {
+                                  AlertDialog alert = AlertDialog(
+                                    title: Text("Mensaje"),
+                                    content: Text(resultado),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("Cerrar"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return alert;
+                                    },
+                                  );
+                                });
+                              },
+                              child:
+                                  const Text('Notificar Encargados por Correo'),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        } else {
+          //entra aqui si no hay datos
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  } //fin metodo porcentajes
 }//fin class
