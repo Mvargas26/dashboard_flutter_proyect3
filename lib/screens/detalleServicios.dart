@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_progra/models/servicio_model.dart';
+import 'package:proyecto_progra/screens/monitoreoServicios.dart';
+import 'package:proyecto_progra/services/servicios_service.dart';
+import 'package:proyecto_progra/services/staticC.dart';
 
 class DetalleServicios extends StatefulWidget {
   @override
@@ -6,9 +10,19 @@ class DetalleServicios extends StatefulWidget {
 }
 
 class _DetalleServiciosState extends State<DetalleServicios> {
+  //VARIABLES
+  late Future<List<Servicio_Modelo>?>? listadoServicios;
+  bool _asynCall = false;
+
+  @override
+  void initState() {
+    super.initState();
+    listadoServicios = ServiciosService.getServiciosID(StaticC.idServidor);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _detalle());
+    return Scaffold(body: createBody());
   }
 
   // **** METODOS ****
@@ -41,6 +55,54 @@ class _DetalleServiciosState extends State<DetalleServicios> {
           )),
         ),
       ],
+    );
+  }
+
+  Widget createBody() {
+    return FutureBuilder(
+      future: listadoServicios,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          //entro aqui si hay datos
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              // MonitoreoServidor()));
+                              MonitoreoServicios()));
+                },
+                onLongPress: () {},
+                title: Text(snapshot.data![index].codServicio),
+                subtitle: Text(snapshot.data![index].nombServicio),
+              );
+            },
+          );
+        } else {
+          //entra aqui si no hay datos
+          return Center(
+            child: TextButton(
+              onPressed: () async {
+                setState(() {
+                  _asynCall = true;
+                });
+                listadoServicios =
+                    ServiciosService.getServiciosID(StaticC.idServidor);
+                setState(() {
+                  _asynCall = false;
+                });
+              },
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
