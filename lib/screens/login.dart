@@ -176,7 +176,7 @@ Future<void> login(BuildContext context, String user, String pass) async {
               onPressed: () {
                 // Redirigir a otra página
                 Navigator.pushNamed(context,
-                    'elegiServidor'); // Reemplaza '/home' con la ruta de la página de destino
+                    'elegirServidor'); // Reemplaza '/home' con la ruta de la página de destino
               },
               child: Text('Continuar'),
             ),
