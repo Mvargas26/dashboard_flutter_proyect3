@@ -53,6 +53,84 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Scaffold(
+            drawer: Drawer(
+              child: Container(
+                color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.8),
+                child: Column(children: [
+                  SizedBox(
+                    height: 60,
+                  ),
+                  TextButton(
+                      onPressed: () => Servidor_Service.activarNotifiServidor(
+                                  StaticC.userActivo, StaticC.idServidor)
+                              .then((resultado) {
+                            // Creamos un AlertDialog con el resultado obtenido
+                            AlertDialog alert = AlertDialog(
+                              title: Text("Mensaje"),
+                              content: Text(resultado),
+                              actions: [
+                                TextButton(
+                                  child: Text("Cerrar"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                            // Mostramos el AlertDialog
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alert;
+                              },
+                            );
+                          }),
+                      child: Text('Activar Notificaciones para este Servidor',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 33, 34, 42)))),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextButton(
+                      onPressed: () =>
+                          Servidor_Service.desactivarNotifiServidor(
+                                  StaticC.userActivo, StaticC.idServidor)
+                              .then((resultado) {
+                            // Creamos un AlertDialog con el resultado obtenido
+                            AlertDialog alert = AlertDialog(
+                              title: Text("Mensaje"),
+                              content: Text(resultado),
+                              actions: [
+                                TextButton(
+                                  child: Text("Cerrar"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                            // Mostramos el AlertDialog
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alert;
+                              },
+                            );
+                          }),
+                      child: Text(
+                          'Desactivar Notificaciones para este Servidor',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 33, 34, 42)))),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ]),
+              ),
+            ),
             appBar: new AppBar(
               title: new Text(
                   "Monitoreo del Servidor : " + "\n" + snapshot.data!.nombre),
@@ -161,7 +239,7 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold))),
                   ),
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 40),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -193,6 +271,65 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                                     context, 'detalleServicios');
                               },
                               child: const Text('Servicios'),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned.fill(
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: <Color>[
+                                      Color.fromARGB(255, 161, 13, 13),
+                                      Color.fromARGB(255, 210, 25, 25),
+                                      Color.fromARGB(255, 245, 66, 66),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.all(16.0),
+                                textStyle: const TextStyle(fontSize: 20),
+                              ),
+                              onPressed: () {
+                                Servidor_Service.notificarEncargados(
+                                        StaticC.idServidor)
+                                    .then((resultado) {
+                                  AlertDialog alert = AlertDialog(
+                                    title: Text("Mensaje"),
+                                    content: Text(resultado),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("Cerrar"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return alert;
+                                    },
+                                  );
+                                });
+                              },
+                              child:
+                                  const Text('Notificar Encargados por Correo'),
                             ),
                           ],
                         ),

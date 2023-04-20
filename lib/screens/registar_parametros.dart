@@ -95,7 +95,6 @@ class _RegistrarParametrosPageState extends State<RegistrarParametrosPage> {
     );
   }
 
-  @override
   Widget _createBody(String nombreServidor) {
     return FutureBuilder(
       future: Umbral_Service.getNombre(),
@@ -280,30 +279,31 @@ class _RegistrarParametrosPageState extends State<RegistrarParametrosPage> {
     }
   }
 
-void _eliminarParametro() async {
-  String server = _servidorController.text;
-  String umbralP = _umbralController.text;
-  String componente = _codigoomponenteController.text;
-  
-  bool resultado = await Umbral_Service.eliminarUmbral(server, umbralP, componente);
-  if (resultado) {
-    final snackBar = SnackBar(
-      content: Text('Parametro eliminado con éxito'),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    Navigator.pop(context); // me manda a la pagina anterior es decir a la de contacto
-  } else {
-    final snackBar = SnackBar(
-      content: Text('Error eliminando el parametro'),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    // Agregue esta línea
+  void _eliminarParametro() async {
+    String server = _servidorController.text;
+    String umbralP = _umbralController.text;
+    String componente = _codigoomponenteController.text;
+
+    bool resultado =
+        await Umbral_Service.eliminarUmbral(server, umbralP, componente);
+    if (resultado) {
+      final snackBar = SnackBar(
+        content: Text('Parametro eliminado con éxito'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.pop(
+          context); // me manda a la pagina anterior es decir a la de contacto
+    } else {
+      final snackBar = SnackBar(
+        content: Text('Error eliminando el parametro'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      // Agregue esta línea
+    }
   }
-}
 
-
-void _actualizarusuario() async {
-   var c = Umbral(codComp: '', codServer: '', codUmbral: '', porcentaje: 0);
+  void _actualizarusuario() async {
+    var c = Umbral(codComp: '', codServer: '', codUmbral: '', porcentaje: 0);
     c.codServer = _servidorController.text;
     c.codUmbral = _umbralController.text;
     c.codComp = _codigoomponenteController.text;
@@ -322,11 +322,4 @@ void _actualizarusuario() async {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
-
-
-
-
-
-
-
 }

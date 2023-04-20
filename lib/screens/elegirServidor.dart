@@ -27,50 +27,43 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
         title: Text('Usuario',
             style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(129, 139, 66, 121).withOpacity(0.4)
-                )
-                ),
+                color: Color.fromARGB(255, 228, 228, 228))),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.severe_cold_rounded),
+            icon: Icon(Icons.computer_outlined, size: 30, color: Colors.white),
             onPressed: () {
-              Navigator.pushNamed(context, 'mantenimientoServidor');
-              
+              Navigator.pushNamed(context, 'filtarServidor');
             },
           ),
         ],
       ),
-      body: 
-         Container(
-
+      body: Container(
         //   //se usa para poner el fondo
-           width: MediaQuery.of(context).size.width,
-           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
           gradient: new LinearGradient(
-             colors: [
-               Color.fromARGB(129, 255, 255, 255).withOpacity(0.4),
-                 Color.fromARGB(129, 255, 255, 255).withOpacity(0.4),
-               ],
-           ),
-         ),
-         child: Column(
-           mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-             Expanded(child: createBody()),
-           
+            colors: [
+              Color.fromARGB(129, 255, 255, 255).withOpacity(0.4),
+              Color.fromARGB(129, 255, 255, 255).withOpacity(0.4),
+            ],
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(child: createBody()),
           ],
-            ),
-         ),
-        );
+        ),
+      ),
+    );
   }
 
   Widget mantenimiento(BuildContext context) {
@@ -142,10 +135,6 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
       ),
     );
   }
-
-
-
-
 
   Widget mantenimiento2(BuildContext context) {
     return SizedBox(
@@ -223,25 +212,38 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           //entro aqui si hay datos
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
+          return GridView.count(
+            crossAxisCount: 2,
+            childAspectRatio: 1,
+            children: List.generate(snapshot.data!.length, (index) {
+              return GestureDetector(
                 onTap: () {
                   StaticC.idServidor = snapshot.data![index]
                       .codServidor; //aqui guardamos el id seleccionado
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              // MonitoreoServidor()));
-                              DetallarServidor(snapshot.data![index])));
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          //DetallarServidor(snapshot.data![index]),
+                          MonitoreoServidor(),
+                    ),
+                  );
                 },
-                onLongPress: () {},
-                title: Text(snapshot.data![index].codServidor),
-                subtitle: Text(snapshot.data![index].nombServidor),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Card(
+                    color: Color.fromARGB(129, 233, 179, 219).withOpacity(0.3),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(snapshot.data![index].codServidor),
+                        Text(snapshot.data![index].nombServidor),
+                      ],
+                    ),
+                  ),
+                ),
               );
-            },
+            }),
           );
         } else {
           //entra aqui si no hay datos
@@ -265,7 +267,4 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
       },
     );
   }
-
-
-
 }//fin class

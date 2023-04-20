@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:proyecto_progra/services/staticC.dart';
 import '../widget/HeaderWidget.dart';
 import '../widget/TextFieldCustom.dart';
 
@@ -153,28 +154,31 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 Future<void> login(BuildContext context, String user, String pass) async {
-  final String apiUrl = 'http://10.0.2.2:5021/iniciar/sesion/'; // Reemplaza con la URL de tu mini API
+  final String apiUrl =
+      'http://10.0.2.2:5021/iniciar/sesion/'; // Reemplaza con la URL de tu mini API
   final Map<String, String> headers = {'Content-Type': 'application/json'};
-  final Map<String, String> body = {'nombUser': user, 'passUser': pass};
+  final Map<String, String> body = {'nombUser': pass, 'passUser': user};
 
-  final response = await http.post(Uri.parse(apiUrl), headers: headers, body: json.encode(body));
+  final response = await http.post(Uri.parse(apiUrl),
+      headers: headers, body: json.encode(body));
 
   if (response.statusCode == 200) {
     // Si la respuesta es exitosa (código 200)
     final Map<String, dynamic> data = json.decode(response.body);
-    
+
     // Mostrar mensaje satisfactorio
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Inicio de sesión exitoso'),
-          content: Text('¡Bienvenido! $user'),
+          content: Text('¡Bienvenido! $pass'),
           actions: [
             ElevatedButton(
               onPressed: () {
                 // Redirigir a otra página
-                Navigator.pushNamed(context, 'elegirServidor'); // Reemplaza '/home' con la ruta de la página de destino
+                Navigator.pushNamed(context,
+                    'elegirServidor'); // Reemplaza '/home' con la ruta de la página de destino
               },
               child: Text('Continuar'),
             ),
