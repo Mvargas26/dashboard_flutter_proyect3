@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
               type: TextInputType.text,
               pass: false,
               texto: 'Usuario',
-              controller: _passController),
+              controller: _idController),
           SizedBox(
             height: 25,
           ),
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
               type: TextInputType.text,
               pass: false,
               texto: 'Contraseña',
-              controller: _idController),
+              controller: _passController),
           SizedBox(
             height: 25,
           ),
