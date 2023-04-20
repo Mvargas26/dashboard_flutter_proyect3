@@ -69,6 +69,7 @@ class _DetalleServiciosState extends State<DetalleServicios> {
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 onTap: () {
+                  StaticC.idServicio = snapshot.data![index].codServicio;
                   Navigator.push(
                       context,
                       MaterialPageRoute(

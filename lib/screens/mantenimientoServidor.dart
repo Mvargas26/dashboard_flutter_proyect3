@@ -26,21 +26,20 @@ class _MantenimientoServiidorPageState
   final _descripcionController = new TextEditingController();
   final _admiRegistraController = new TextEditingController();
   final _contrasenaController = new TextEditingController();
-  final _codigoomponenteController = new TextEditingController();  
+  final _codigoomponenteController = new TextEditingController();
   final _umbralController = new TextEditingController();
-  
-  
+
   final _porcentajeController = new TextEditingController();
   bool _saving = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       drawer: Drawer(
+      drawer: Drawer(
         child: Container(
           color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.8),
           child: Column(children: [
-              SizedBox(
+            SizedBox(
               height: 60,
             ),
             TextButton(
@@ -55,7 +54,8 @@ class _MantenimientoServiidorPageState
               height: 20,
             ),
             TextButton(
-                onPressed: () => Navigator.pushNamed(context, 'registrarServidor'),
+                onPressed: () =>
+                    Navigator.pushNamed(context, 'registrarServidor'),
                 child: Text('Servidor',
                     style: TextStyle(
                         fontSize: 20,
@@ -64,8 +64,6 @@ class _MantenimientoServiidorPageState
             SizedBox(
               height: 20,
             ),
-          
-           
           ]),
         ),
       ),
@@ -76,38 +74,19 @@ class _MantenimientoServiidorPageState
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(255, 255, 255, 255))),
       ),
-
-
-   body: Container(
+      body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          
-            color:Color.fromARGB(119, 252, 234, 252)
-            
-          
+        decoration: BoxDecoration(color: Color.fromARGB(119, 252, 234, 252)),
+        child: SizedBox(
+          child: Stack(
+            children: [_inputBuscar(), _createBody("Nombre del servidor")],
           ),
-        
-         child: SizedBox(
-  child: Stack(
-    children: [
-            _inputBuscar(),
-            _createBody("Nombre del servidor")
-            ],
-         
-  ),
-),
-
-
-
-
-
         ),
-      
+      ),
     );
   }
 
-  @override
   Widget _createBody(String nombreServidor) {
     return FutureBuilder(
       future: Umbral_Service.getNombre(),
@@ -131,7 +110,6 @@ class _MantenimientoServiidorPageState
                     Text(snapshot.data![index].porcentaje.toString()),
                   ],
                 ),
-              
               );
             },
           );
@@ -157,30 +135,21 @@ class _MantenimientoServiidorPageState
     );
   }
 
-  Widget _inputBuscar(){
-  return Row(
-    children: [
-      Expanded(
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: 'Nombre de usuario.',
+  Widget _inputBuscar() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Nombre de usuario.',
+            ),
           ),
         ),
-      ),
-      IconButton(
-        icon: Icon(Icons.search_rounded),
-        onPressed: () {},
-      ),
-    ],
-  );
-}
-
-    
-
+        IconButton(
+          icon: Icon(Icons.search_rounded),
+          onPressed: () {},
+        ),
+      ],
+    );
   }
-
-
-
-
-
-
+}
