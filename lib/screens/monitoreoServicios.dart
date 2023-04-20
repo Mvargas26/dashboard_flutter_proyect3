@@ -216,8 +216,28 @@ class _MonitoreoServiciosState extends State<MonitoreoServicios> {
                                 textStyle: const TextStyle(fontSize: 20),
                               ),
                               onPressed: () {
-                                // Navigator.pushNamed(
-                                //     context, 'detalleServicios');
+                                ServiciosService.notificarEncargados(
+                                        StaticC.idServicio, StaticC.idServidor)
+                                    .then((resultado) {
+                                  AlertDialog alert = AlertDialog(
+                                    title: Text("Mensaje"),
+                                    content: Text(resultado),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("Cerrar"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return alert;
+                                    },
+                                  );
+                                });
                               },
                               child:
                                   const Text('Notificar Encargados por Correo'),
