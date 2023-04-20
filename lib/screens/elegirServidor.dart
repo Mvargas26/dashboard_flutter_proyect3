@@ -3,6 +3,8 @@ import 'package:proyecto_progra/screens/detallarServidor.dart';
 import 'package:proyecto_progra/screens/monitoreoServidor.dart';
 import 'package:proyecto_progra/services/staticC.dart';
 
+
+
 import '../models/servidor_model.dart';
 import '../services/servidor_service.dart';
 
@@ -30,16 +32,17 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
       
       
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
         title: Text('Usuario',
             style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(129, 139, 66, 121).withOpacity(0.4)
+                color: Color.fromARGB(255, 228, 228, 228)
                 )
                 ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.severe_cold_rounded),
+          icon: Icon(Icons.computer_outlined, size: 30, color: Colors.white),
             onPressed: () {
               Navigator.pushNamed(context, 'filtarServidor');
               
@@ -217,54 +220,65 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
     );
   }
 
-  Widget createBody() {
-    return FutureBuilder(
-      future: listadoServidores,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          //entro aqui si hay datos
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                onTap: () {
-                  StaticC.idServidor = snapshot.data![index]
-                      .codServidor; //aqui guardamos el id seleccionado
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              // MonitoreoServidor()));
-                              DetallarServidor(snapshot.data![index])));
-                },
-                onLongPress: () {},
-                title: Text(snapshot.data![index].codServidor),
-                subtitle: Text(snapshot.data![index].nombServidor),
-              );
-            },
-          );
-        } else {
-          //entra aqui si no hay datos
-          return Center(
-            child: TextButton(
-              onPressed: () async {
-                setState(() {
-                  _asynCall = true;
-                });
-                listadoServidores = Servidor_Service.getServidores();
-                setState(() {
-                  _asynCall = false;
-                });
+ Widget createBody() {
+  return FutureBuilder(
+    future: listadoServidores,
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        //entro aqui si hay datos
+        return GridView.count(
+          crossAxisCount: 2, 
+          childAspectRatio: 1, 
+          children: List.generate(snapshot.data!.length, (index) {
+            return GestureDetector(
+              onTap: () {
+                StaticC.idServidor = snapshot.data![index].codServidor; //aqui guardamos el id seleccionado
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        DetallarServidor(snapshot.data![index]),
+                  ),
+                );
               },
-              child: Center(
-                child: CircularProgressIndicator(),
+              child: Padding(
+                padding: EdgeInsets.all(8.0), 
+                child: Card(
+                  color: Color.fromARGB(129, 233, 179, 219).withOpacity(0.3), 
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(snapshot.data![index].codServidor),
+                      Text(snapshot.data![index].nombServidor),
+                    ],
+                  ),
+                ),
               ),
+            );
+          }),
+        );
+      } else {
+        //entra aqui si no hay datos
+        return Center(
+          child: TextButton(
+            onPressed: () async {
+              setState(() {
+                _asynCall = true;
+              });
+              listadoServidores = Servidor_Service.getServidores();
+              setState(() {
+                _asynCall = false;
+              });
+            },
+            child: Center(
+              child: CircularProgressIndicator(),
             ),
-          );
-        }
-      },
-    );
-  }
+          ),
+        );
+      }
+    },
+  );
+}
 
 
 
