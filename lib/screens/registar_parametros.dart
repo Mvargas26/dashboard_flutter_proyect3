@@ -314,7 +314,7 @@ void _actualizarusuario() async {
         content: Text('Correo actualizado con éxito'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      Navigator.pop(context, 'Usuario');
+      Navigator.pop(context, ' ');
     } else {
       final snackBar = SnackBar(
         content: Text('Error actualizando correo'),
