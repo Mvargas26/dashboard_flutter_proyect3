@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
         'registrarParametros': (_) => RegistrarParametrosPage(),
         'registrarServidor': (_) => RegistrarServidorPage(),
         'detalleServicios': (_) => DetalleServicios(),
+        'moniServicios': (_) => DetalleServicios(),
       },
     );
   }
