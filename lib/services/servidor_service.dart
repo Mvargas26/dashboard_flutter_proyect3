@@ -136,4 +136,24 @@ class Servidor_Service {
       return response.body.toString();
     }
   } //fn
+
+  static Future<String> notificarEncargados(String idServer) async {
+    var url = Uri.parse(
+        _baseURL + "correo/encargado/servidor/?servBuscar=" + idServer);
+    Map<String, String> correo = {
+      'asunto': "Problema en el servidor " + idServer,
+      'mensaje': "Se han presentado problemas en el servidor " +
+          idServer +
+          " o uno de sus servicios, favor verificar.",
+    };
+    final response = await http.post(url);
+
+    print(response.body[1]);
+
+    if (response.statusCode == 200) {
+      return response.body.toString();
+    } else {
+      return response.body.toString();
+    }
+  } //fn
 }//fin class 

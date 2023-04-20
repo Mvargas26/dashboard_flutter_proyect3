@@ -239,7 +239,7 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold))),
                   ),
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 40),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -271,6 +271,65 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
                                     context, 'detalleServicios');
                               },
                               child: const Text('Servicios'),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned.fill(
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: <Color>[
+                                      Color.fromARGB(255, 161, 13, 13),
+                                      Color.fromARGB(255, 210, 25, 25),
+                                      Color.fromARGB(255, 245, 66, 66),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.all(16.0),
+                                textStyle: const TextStyle(fontSize: 20),
+                              ),
+                              onPressed: () {
+                                Servidor_Service.notificarEncargados(
+                                        StaticC.idServidor)
+                                    .then((resultado) {
+                                  AlertDialog alert = AlertDialog(
+                                    title: Text("Mensaje"),
+                                    content: Text(resultado),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("Cerrar"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return alert;
+                                    },
+                                  );
+                                });
+                              },
+                              child:
+                                  const Text('Notificar Encargados por Correo'),
                             ),
                           ],
                         ),
