@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_progra/models/servicio.dart';
 import 'package:proyecto_progra/models/servicio_model.dart';
 import 'package:proyecto_progra/screens/monitoreoServicios.dart';
 import 'package:proyecto_progra/services/servicios_service.dart';
@@ -11,13 +12,13 @@ class DetalleServicios extends StatefulWidget {
 
 class _DetalleServiciosState extends State<DetalleServicios> {
   //VARIABLES
-  late Future<List<Servicio_Modelo>?>? listadoServicios;
+  late Future<List<Servicio>?>? listadoServicios;
   bool _asynCall = false;
 
   @override
   void initState() {
     super.initState();
-    listadoServicios = ServiciosService.getServiciosID(StaticC.idServidor);
+    // listadoServicios = Servicio_Service.getServicioID();
   }
 
   @override
@@ -90,8 +91,8 @@ class _DetalleServiciosState extends State<DetalleServicios> {
                 setState(() {
                   _asynCall = true;
                 });
-                listadoServicios =
-                    ServiciosService.getServiciosID(StaticC.idServidor);
+                // listadoServicios =
+                //     Servicio_Service.getServicioID(StaticC.idServidor);
                 setState(() {
                   _asynCall = false;
                 });

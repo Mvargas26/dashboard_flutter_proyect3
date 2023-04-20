@@ -1,39 +1,114 @@
-import 'package:http/http.dart' as http;
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
-import '../models/servicio_model.dart';
+import 'package:proyecto_progra/models/manten_servicio_model.dart';
+import 'package:http/http.dart' as http;
 
-class ServiciosService {
-//VARIABLES
-  //static String _baseURL = 'http://apiprogra.somee.com/';
+import '../models/manten_servicio_model.dart';
+import '../models/servicio.dart';
+
+class Servicio_Service {
   static String _baseURL = 'http://10.0.2.2:5021/';
 
-  // Metodo para obtener Servicios  por id del servidor
-  static Future<List<Servicio_Modelo>?> getServiciosID(String codServer) async {
-    var url = Uri.parse(_baseURL + "Servicios/" + codServer);
+  static Future<List<Servicio_Model>?> getServicio() async {
+    var url = Uri.parse(_baseURL + "Servicios");
     final response = await http.get(url);
-    List<Servicio_Modelo> Servicios = [];
+    List<Servicio_Model> Servicio = [];
 
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
 
       final jsonData = jsonDecode(body);
 
-      //print(jsonData[1]["c"]["codServicio"]);
-
       for (var i = 0; i < jsonData.length; i++) {
-        Servicios.add(Servicio_Modelo(
+        Servicio.add(Servicio_Model(
             jsonData[i]["c"]["codServicio"],
-            jsonData[i]["c"]["nombServicio"],
-            jsonData[i]["c"]["descServicio"],
+            jsonData[i]["c"]["nombServidor"],
+            jsonData[i]["c"]["descServidor"],
             jsonData[i]["c"]["tipoServicio"],
             jsonData[i]["c"]["servidorPertenece"],
-            int.parse(jsonData[i]["c"]["timeOut"].toString())));
+            jsonData[i]["c"]["timeOut"]));
       }
 
-      return Servicios;
+      return Servicio;
     } else {
-      throw Exception("********** Fallo getServiciosID ********* ");
+      throw Exception("Error");
     }
-  } //fn getServidorID
-}//fin class
+  }
+
+  static Future<List<Servicio_Model>?> getServicioID(int Id) async {
+    var url = Uri.parse(_baseURL + "Servicios/$Id");
+    final response = await http.get(url);
+    List<Servicio_Model> ServicioId = [];
+
+    if (response.statusCode == 200) {
+      String body = utf8.decode(response.bodyBytes);
+
+      final jsonData = jsonDecode(body);
+
+      for (var i = 0; i < jsonData.length; i++) {
+        ServicioId.add(Servicio_Model(
+            jsonData[i]["c"]["codServicio"],
+            jsonData[i]["c"]["nombServidor"],
+            jsonData[i]["c"]["descServidor"],
+            jsonData[i]["c"]["tipoServicio"],
+            jsonData[i]["c"]["servidorPertenece"],
+            jsonData[i]["c"]["timeOut"]));
+      }
+
+      return ServicioId;
+    } else {
+      throw Exception("Fallo");
+    }
+  }
+
+  static Future<bool> createServicio(Servicio c) async{
+    var url = Uri.parse(_baseURL + "ing_Servicio");
+    final response = await http.post(url, 
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(c.toJson()));
+
+    if(response.statusCode == 201){
+      print("Servicio creado con exito.");
+      return true;
+    }else if(response.statusCode == 409){
+      print("El servicio ya existe.");
+      return false;
+    }else{
+      return false;
+    }
+  }
+
+  static Future<bool> updateServicio(Servicio c) async{
+    var url = Uri.parse(_baseURL + "updt_Servicio");
+    final response = await http.put(url,
+    headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(c.toJson()));
+
+    if(response.statusCode == 200){
+      print("Servicio actualizado correctamente.");
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  static Future<bool> deleteServicio(int id) async{
+    var url = Uri.parse(_baseURL + "del_Servicios/$id");
+    final response = await http.delete(url);
+
+    if(response.statusCode == 200){
+      print("Servicio eliminado.");
+      return true;
+    }else{
+      return false;
+    }
+
+  }
+
+}

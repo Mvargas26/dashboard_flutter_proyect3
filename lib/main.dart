@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_progra/screens/detalleServicios.dart';
 import 'package:proyecto_progra/screens/elegirServidor.dart';
 import 'package:proyecto_progra/screens/login.dart';
+import 'package:proyecto_progra/screens/mantenimientoServicio.dart';
 import 'package:proyecto_progra/screens/mantenimientoServidor.dart';
 import 'package:proyecto_progra/screens/monitoreoServidor.dart';
 import 'package:proyecto_progra/screens/registar_parametros.dart';
+import 'package:proyecto_progra/screens/registrar_Servicio.dart';
 import 'package:proyecto_progra/screens/registrar_Servidor.dart';
 import 'package:proyecto_progra/screens/servidorWindows.dart';
 
@@ -23,8 +25,10 @@ class MyApp extends StatelessWidget {
         'elegirServidor': (_) => ElegirSeridorPage(),
         'servidorW': (_) => ServidorWPage(),
         'moniServidor': (_) => MonitoreoServidor(),
+        // 'mantenimientoServicio': (_) => MantenimientoServicioPage(),
         'mantenimientoServidor': (_) => MantenimientoServiidorPage(),
         'registrarParametros': (_) => RegistrarParametrosPage(),
+        'registrarServicio': (_) => RegistroServicioPage(),
         'registrarServidor': (_) => RegistrarServidorPage(),
         'detalleServicios': (_) => DetalleServicios(),
         'moniServicios': (_) => DetalleServicios(),

@@ -113,11 +113,11 @@ class _LoginPageState extends State<LoginPage> {
       margin: EdgeInsets.all(2),
       child: TextButton(
         onPressed:(){
-          //String user = _idController.text;
-         // String pass = _passController.text;
-         // login(context, user, pass); // Pasar los valores ingresados al método de inicio de sesión
+          String user = _idController.text;
+         String pass = _passController.text;
+         login(context, user, pass); // Pasar los valores ingresados al método de inicio de sesión
       
-        Navigator.pushNamed(context, 'elegirServidor');
+        Navigator.pushNamed(context, 'registrarServicio');
         
         },
         child: Text(
