@@ -35,6 +35,7 @@ class _RegistrarParametrosPageState extends State<RegistrarParametrosPage> {
         ),
       ),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
         title: Text('Parametros',
             style: TextStyle(
                 fontSize: 25,

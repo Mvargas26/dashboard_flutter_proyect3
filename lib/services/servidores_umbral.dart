@@ -44,7 +44,7 @@ static Future<List<ServidoresR>> getServidor() async {
           'Content-Type': 'application/json; charset=UTF-8'
         },
         body: jsonEncode(c.toJson()));
-    if (response.statusCode == 201) {
+    if (response.statusCode == 201|| response.statusCode == 200) {
       return true;
     } else {
       return false;
@@ -120,10 +120,9 @@ static Future<List<ServidoresR>> getServidor() async {
     }
   } //fn sevidor
 
-  //*** Metodo para Eliminar parametro
+  //*** Metodo para Eliminar servidor
   static Future<bool> eliminarServidor(String server) async {
-    var url = Uri.parse(_baseURL + "del_Servicios+ /" + server + "");
-
+    var url = Uri.parse(_baseURL + "Servidor/" + server + "");
     final response = await http.delete(url);
     if (response.statusCode == 200) {
       return true;

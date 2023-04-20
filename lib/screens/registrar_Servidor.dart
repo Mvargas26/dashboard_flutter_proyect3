@@ -3,6 +3,7 @@ import 'package:proyecto_progra/main.dart';
 import 'package:proyecto_progra/models/servidor.dart';
 import 'package:proyecto_progra/models/umbral.dart';
 import '../models/servidor_model.dart';
+import '../services/servidor_service.dart';
 import '/models/servidor_nombreModel.dart';
 import '/services/servidores_umbral.dart';
 import '/widget/TextFieldCustom.dart';
@@ -17,6 +18,7 @@ class RegistrarServidorPage extends StatefulWidget {
 
 class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
   Future<List<ServidorNombre>>? servidor;
+  Future<List<Servidor_Model>?>? listadoServidores;
   bool _asyncCall = false;
   bool _activo = false;
   final _servidorController = new TextEditingController();
@@ -39,6 +41,7 @@ class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
         ),
       ),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
         title: Text('Servidor',
             style: TextStyle(
                 fontSize: 25,
@@ -102,7 +105,7 @@ class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
 
   Widget _createBody(String nombreServidor) {
     return FutureBuilder(
-      future: Umbral_Service.getNombre(),
+      future: Servidor_Service.getServidores(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           //entro aqui si hay datos
@@ -113,23 +116,23 @@ class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(snapshot.data![index].servidor),
-                    Text(snapshot.data![index].nombre),
-                    Text(snapshot.data![index].descripcion),
-                    Text(snapshot.data![index].administrador),
-                    Text(snapshot.data![index].contrasena),
+                    Text(snapshot.data![index].codServidor),
+                    Text(snapshot.data![index].nombServidor),
+                    Text(snapshot.data![index].descServidor),
+                    Text(snapshot.data![index].userAdmiServidor),
+                    Text(snapshot.data![index].passServidor),
                   ],
                 ),
                 onTap: () {
                   setState(() {
-                    _servidorController.text = snapshot.data![index].servidor;
-                    _nombreController.text = snapshot.data![index].nombre;
+                    _servidorController.text = snapshot.data![index].codServidor;
+                    _nombreController.text = snapshot.data![index].nombServidor;
                     _descripcionController.text =
-                        snapshot.data![index].descripcion;
+                        snapshot.data![index].descServidor;
                     _admiRegistraController.text =
-                        snapshot.data![index].administrador;
+                        snapshot.data![index].userAdmiServidor;
                     _contrasenaController.text =
-                        snapshot.data![index].contrasena;
+                        snapshot.data![index].passServidor;
                   });
                 },
               );
@@ -331,7 +334,7 @@ class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
       Navigator.pop(context, '');
     } else {
       final snackBar = SnackBar(
-        content: Text('Servidor actualizado con éxito'),
+        content: Text(' Error al actualizar el servidor'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }

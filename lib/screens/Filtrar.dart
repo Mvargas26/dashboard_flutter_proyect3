@@ -51,6 +51,7 @@ class _filtrarPageState extends State<filtrarPage> {
         ),
       ),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
         title: Text('Servidores',
             style: TextStyle(
                 fontSize: 25,

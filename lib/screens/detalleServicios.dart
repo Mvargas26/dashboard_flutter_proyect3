@@ -22,7 +22,20 @@ class _DetalleServiciosState extends State<DetalleServicios> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: createBody());
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
+        title: Text('Servicios',
+            style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 228, 228, 228))),
+       
+      ),
+      
+      
+      
+      body: createBody());
   }
 
   // **** METODOS ****
@@ -58,52 +71,82 @@ class _DetalleServiciosState extends State<DetalleServicios> {
     );
   }
 
-  Widget createBody() {
-    return FutureBuilder(
-      future: listadoServicios,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          //entro aqui si hay datos
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                onTap: () {
-                  StaticC.idServicio = snapshot.data![index].codServicio;
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              // MonitoreoServidor()));
-                              MonitoreoServicios()));
-                },
-                onLongPress: () {},
-                title: Text(snapshot.data![index].codServicio),
-                subtitle: Text(snapshot.data![index].nombServicio),
-              );
-            },
-          );
-        } else {
-          //entra aqui si no hay datos
-          return Center(
-            child: TextButton(
-              onPressed: () async {
-                setState(() {
-                  _asynCall = true;
-                });
-                listadoServicios =
-                    ServiciosService.getServiciosID(StaticC.idServidor);
-                setState(() {
-                  _asynCall = false;
-                });
+Widget createBody() {
+  return FutureBuilder(
+    future: listadoServicios,
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        //entro aqui si hay datos
+        return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 1,
+          ),
+          itemCount: snapshot.data!.length,
+          itemBuilder: (BuildContext context, int index) {
+            return InkWell(
+              onTap: () {
+                StaticC.idServicio = snapshot.data![index].codServicio;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MonitoreoServicios(),
+                  ),
+                );
               },
-              child: Center(
-                child: CircularProgressIndicator(),
+              onLongPress: () {},
+              child: Padding(
+                padding: EdgeInsets.all(10), 
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(129, 227, 168, 212).withOpacity(0.3),
+                    
+                   
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        snapshot.data![index].codServicio,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        snapshot.data![index].nombServicio,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
               ),
+            );
+          },
+        );
+      } else {
+        //entra aqui si no hay datos
+        return Center(
+          child: TextButton(
+            onPressed: () async {
+              setState(() {
+                _asynCall = true;
+              });
+              listadoServicios =
+                  ServiciosService.getServiciosID(StaticC.idServidor);
+              setState(() {
+                _asynCall = false;
+              });
+            },
+            child: Center(
+              child: CircularProgressIndicator(),
             ),
-          );
-        }
-      },
-    );
-  }
+          ),
+        );
+      }
+    },
+  );
+}
+
+
 }

@@ -29,7 +29,7 @@ class _ElegirSeridorPageState extends State<ElegirSeridorPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
-        title: Text('Usuario',
+        title: Text('Servidores',
             style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
