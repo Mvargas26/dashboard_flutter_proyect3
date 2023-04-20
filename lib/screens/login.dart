@@ -193,7 +193,7 @@ Future<void> login(BuildContext context, String user, String pass) async {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Error en el inicio de sesión'),
-          content: Text('Usuario y/o contraseña incorrectos.'),
+          content: Text('Usuario y/o contraseña incorrectos'),
           actions: [
             ElevatedButton(
               onPressed: () {
