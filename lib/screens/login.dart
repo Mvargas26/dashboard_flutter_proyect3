@@ -116,7 +116,8 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () {
           String user = _idController.text;
           String pass = _passController.text;
-          login(context, user, pass); // Pasar los valores ingresados al método de inicio de sesión
+          login(context, user,
+              pass); // Pasar los valores ingresados al método de inicio de sesión
           StaticC.userActivo = _passController.text;
           //Navigator.pushNamed(context, 'elegirServidor');
         },
@@ -156,7 +157,7 @@ Future<void> login(BuildContext context, String user, String pass) async {
   final String apiUrl =
       'http://10.0.2.2:5021/iniciar/sesion/'; // Reemplaza con la URL de tu mini API
   final Map<String, String> headers = {'Content-Type': 'application/json'};
-  final Map<String, String> body = {'nombUser': user, 'passUser': pass};
+  final Map<String, String> body = {'nombUser': pass, 'passUser': user};
 
   final response = await http.post(Uri.parse(apiUrl),
       headers: headers, body: json.encode(body));
@@ -171,7 +172,7 @@ Future<void> login(BuildContext context, String user, String pass) async {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Inicio de sesión exitoso'),
-          content: Text('¡Bienvenido! $user'),
+          content: Text('¡Bienvenido! $pass'),
           actions: [
             ElevatedButton(
               onPressed: () {

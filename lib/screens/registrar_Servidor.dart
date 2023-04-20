@@ -300,7 +300,7 @@ class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
       Navigator.pop(context, c);
     } else {
       final snackBar = SnackBar(
-        content: Text('Servidor creado con éxito'),
+        content: Text('Error al crear Servidor'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       setState(() {
