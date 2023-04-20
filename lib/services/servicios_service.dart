@@ -1,114 +1,113 @@
-// ignore_for_file: avoid_print
-
-import 'dart:convert';
-
-import 'package:proyecto_progra/models/manten_servicio_model.dart';
 import 'package:http/http.dart' as http;
-
-import '../models/manten_servicio_model.dart';
-import '../models/servicio.dart';
-
-class Servicio_Service {
+import 'dart:convert';
+import '../models/monitoreoServicio_model.dart';
+import '../models/servicio_model.dart';
+class ServiciosService {
+//VARIABLES
+  //static String _baseURL = 'http://apiprogra.somee.com/';
   static String _baseURL = 'http://10.0.2.2:5021/';
-
-  static Future<List<Servicio_Model>?> getServicio() async {
-    var url = Uri.parse(_baseURL + "Servicios");
+  // Metodo para obtener Servicios  por id del servidor
+  static Future<List<Servicio_Modelo>?> getServiciosID(String codServer) async {
+    var url = Uri.parse(_baseURL + "Servicios/" + codServer);
     final response = await http.get(url);
-    List<Servicio_Model> Servicio = [];
-
+    List<Servicio_Modelo> Servicios = [];
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
-
       final jsonData = jsonDecode(body);
-
+      //print(jsonData[1]["c"]["codServicio"]);
+      if (body.isEmpty) {
+        print("Fallo porque el body viene vacio");
+        Servicios.add(
+            Servicio_Modelo("Empty", "Empty", "Empty", "Empty", "Empty", 0));
+        return Servicios;
+      }
       for (var i = 0; i < jsonData.length; i++) {
-        Servicio.add(Servicio_Model(
+        Servicios.add(Servicio_Modelo(
             jsonData[i]["c"]["codServicio"],
-            jsonData[i]["c"]["nombServidor"],
-            jsonData[i]["c"]["descServidor"],
+            jsonData[i]["c"]["nombServicio"],
+            jsonData[i]["c"]["descServicio"],
             jsonData[i]["c"]["tipoServicio"],
             jsonData[i]["c"]["servidorPertenece"],
-            jsonData[i]["c"]["timeOut"]));
+            int.parse(jsonData[i]["c"]["timeOut"].toString())));
       }
-
-      return Servicio;
+      return Servicios;
+    } else if (response.statusCode == 404 || response.statusCode == 404) {
+      Servicios.add(Servicio_Modelo(
+          "Error 404", "Servicio no encontrado", "", "", "", 0));
+      return Servicios;
     } else {
-      throw Exception("Error");
+      print("Fallo porque el body viene vacio");
+      Servicios.add(
+          Servicio_Modelo("Empty", "Empty", "Empty", "Empty", "Empty", 0));
+      return Servicios;
     }
-  }
-
-  static Future<List<Servicio_Model>?> getServicioID(int Id) async {
-    var url = Uri.parse(_baseURL + "Servicios/$Id");
+  } //fn getServidorID
+//Monitoreo de un servicio
+  static Future<MonitoreoServicio_Model> monitoreoServicio(
+      String codServer, String codServicio) async {
+    var url = Uri.parse(
+        _baseURL + "monitoreoServicio/" + codServer + "/" + codServicio);
     final response = await http.get(url);
-    List<Servicio_Model> ServicioId = [];
-
+    MonitoreoServicio_Model monitoreoActual =
+        MonitoreoServicio_Model("", "", 0, DateTime.now(), "", 0);
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
-
-      final jsonData = jsonDecode(body);
-
-      for (var i = 0; i < jsonData.length; i++) {
-        ServicioId.add(Servicio_Model(
-            jsonData[i]["c"]["codServicio"],
-            jsonData[i]["c"]["nombServidor"],
-            jsonData[i]["c"]["descServidor"],
-            jsonData[i]["c"]["tipoServicio"],
-            jsonData[i]["c"]["servidorPertenece"],
-            jsonData[i]["c"]["timeOut"]));
+      if (body.isEmpty) {
+        print("Fallo porque el body viene vacio");
+        return MonitoreoServicio_Model(
+            "Empty", "Empty", 0, DateTime.now(), "Empty", 0);
       }
-
-      return ServicioId;
+      final jsonData = jsonDecode(body);
+      monitoreoActual.servidorPertenece = jsonData["servidorPertenece"];
+      monitoreoActual.idServicio = jsonData["idServicio"];
+      monitoreoActual.fechaMoniServicio =
+          DateTime.parse(jsonData["fechaMoniServicio"]);
+      monitoreoActual.estadoServicio =
+          int.parse(jsonData["estadoServicio"].toString());
+      monitoreoActual.timeOutServicio =
+          int.parse(jsonData["timeOutServicio"].toString());
+      monitoreoActual.estadoParam = jsonData["estadoParam"];
+      return monitoreoActual;
     } else {
-      throw Exception("Fallo");
+      throw Exception("***** Fallo Monitoreo Servicio ");
     }
-  }
-
-  static Future<bool> createServicio(Servicio c) async{
-    var url = Uri.parse(_baseURL + "ing_Servicio");
-    final response = await http.post(url, 
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(c.toJson()));
-
-    if(response.statusCode == 201){
-      print("Servicio creado con exito.");
-      return true;
-    }else if(response.statusCode == 409){
-      print("El servicio ya existe.");
-      return false;
-    }else{
-      return false;
+  } //fn monitoreoServicio
+//Activar Notificacion de Un Servicio
+  static Future<String> activarNotifiServicio(
+      String user, String codServicio) async {
+    var url = Uri.parse(_baseURL +
+        "Servicios/ActivarNotificacionServicio?user=" +
+        user +
+        "&codServicio=" +
+        codServicio);
+    final response = await http.put(url);
+    print(response.body);
+    if (response.statusCode == 200) {
+      // Si la respuesta es exitosa, decodificamos los datos JSON y los retornamos
+      return "Alertas Activadas";
+    } else {
+      // Si la respuesta no es exitosa, lanzamos una excepción con el mensaje de error
+      return response.body.toString();
     }
-  }
+  } //fn
 
-  static Future<bool> updateServicio(Servicio c) async{
-    var url = Uri.parse(_baseURL + "updt_Servicio");
-    final response = await http.put(url,
-    headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(c.toJson()));
-
-    if(response.statusCode == 200){
-      print("Servicio actualizado correctamente.");
-      return true;
-    }else{
-      return false;
+  //Activar Notificacion de Un Servicio
+  //Desactivar Notificacion de Un Servicio
+  static Future<String> desactivarNotifiServicio(
+      String user, String codServicio) async {
+    var url = Uri.parse(_baseURL +
+        "Servicios/DesactivarNotificacionServicio?user=" +
+        user +
+        "&codServicio=" +
+        codServicio);
+    final response = await http.put(url);
+    print(response.body[1]);
+    if (response.statusCode == 200) {
+      // Si la respuesta es exitosa, decodificamos los datos JSON y los retornamos
+      return "Alertas Desactivadas";
+    } else {
+      // Si la respuesta no es exitosa, lanzamos una excepción con el mensaje de error
+      return response.body.toString();
     }
-  }
-
-  static Future<bool> deleteServicio(int id) async{
-    var url = Uri.parse(_baseURL + "del_Servicios/$id");
-    final response = await http.delete(url);
-
-    if(response.statusCode == 200){
-      print("Servicio eliminado.");
-      return true;
-    }else{
-      return false;
-    }
-
-  }
-
-}
+  } //fn
+}//fin class
