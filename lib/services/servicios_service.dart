@@ -108,7 +108,7 @@ class ServiciosService {
     }
   } //fn
 
-  //Activar Notificacion de Un Servicio
+  //Desactivar Notificacion de Un Servicio
   static Future<String> desactivarNotifiServicio(
       String user, String codServicio) async {
     var url = Uri.parse(_baseURL +

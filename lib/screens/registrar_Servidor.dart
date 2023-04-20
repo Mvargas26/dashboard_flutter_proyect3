@@ -48,7 +48,7 @@ class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-             _eliminarServidor();
+              _eliminarServidor();
             },
           ),
           IconButton(
@@ -100,7 +100,6 @@ class _RegistrarServidorPageState extends State<RegistrarServidorPage> {
     );
   }
 
-  @override
   Widget _createBody(String nombreServidor) {
     return FutureBuilder(
       future: Umbral_Service.getNombre(),

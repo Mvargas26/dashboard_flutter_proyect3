@@ -66,7 +66,7 @@ class _MonitoreoServiciosState extends State<MonitoreoServicios> {
                               .then((resultado) {
                             // Creamos un AlertDialog con el resultado obtenido
                             AlertDialog alert = AlertDialog(
-                              title: Text("Resultado"),
+                              title: Text("Mensaje"),
                               content: Text(resultado),
                               actions: [
                                 TextButton(
@@ -100,7 +100,7 @@ class _MonitoreoServiciosState extends State<MonitoreoServicios> {
                               .then((resultado) {
                             // Creamos un AlertDialog con el resultado obtenido
                             AlertDialog alert = AlertDialog(
-                              title: Text("Resultado"),
+                              title: Text("Mensaje"),
                               content: Text(resultado),
                               actions: [
                                 TextButton(
