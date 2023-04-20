@@ -4,8 +4,10 @@ import 'dart:convert';
 
 import 'package:proyecto_progra/models/manten_servicio_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:proyecto_progra/models/servicio_model.dart';
 
 import '../models/manten_servicio_model.dart';
+import '../models/servicio.dart';
 
 class Servicio_Service {
   static String _baseURL = 'http://10.0.2.2:5021/';
@@ -62,7 +64,7 @@ class Servicio_Service {
     }
   }
 
-  static Future<bool> createServicio(Servicio_Model c) async{
+  static Future<bool> createServicio(Servicio c) async{
     var url = Uri.parse(_baseURL + "ing_Servicio");
     final response = await http.post(url, 
       headers: <String, String>{
@@ -73,15 +75,12 @@ class Servicio_Service {
     if(response.statusCode == 201){
       print("Servicio creado con exito.");
       return true;
-    }else if(response.statusCode == 409){
-      print("El servicio ya existe.");
-      return false;
     }else{
       return false;
     }
   }
 
-  static Future<bool> updateServicio(Servicio_Model servicio) async{
+  static Future<bool> updateServicio(Servicio servicio) async{
     var url = Uri.parse(_baseURL + "updt_Servicio");
     final response = await http.put(url,
     headers: <String, String>{
@@ -97,16 +96,30 @@ class Servicio_Service {
     }
   }
 
-  static Future<void> deleteServicio(int id) async{
-    var url = Uri.parse(_baseURL + "del_Servicios/$id");
+  static Future<bool> deleteServicio(String cod) async{
+    var url = Uri.parse(_baseURL + "del_Servicios/$cod");
     final response = await http.delete(url);
 
     if(response.statusCode == 200){
       print("Servicio eliminado.");
+      return true;
     }else{
-      throw Exception("Fallo al eliminar el servicio.");
+      return false;
     }
 
+  }
+
+    static Future<List<Servicio>> getNombre() async {
+    var url = Uri.parse(_baseURL + "Servicios");
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      List<dynamic> jsonList = json.decode(response.body);
+      List<Servicio> servidorList =
+          jsonList.map((e) => Servicio.fromJson(e)).toList();
+      return servidorList;
+    } else {
+      throw Exception("Fallo");
+    }
   }
 
 }

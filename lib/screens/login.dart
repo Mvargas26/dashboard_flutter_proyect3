@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
               type: TextInputType.text,
               pass: false,
               texto: 'Usuario',
-              controller: _passController),
+              controller: _idController),
           SizedBox(
             height: 25,
           ),
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
               type: TextInputType.text,
               pass: false,
               texto: 'Contraseña',
-              controller: _idController),
+              controller: _passController),
           SizedBox(
             height: 25,
           ),
@@ -119,7 +119,6 @@ class _LoginPageState extends State<LoginPage> {
           login(context, user,
               pass); // Pasar los valores ingresados al método de inicio de sesión
           StaticC.userActivo = _passController.text;
-          //Navigator.pushNamed(context, 'elegirServidor');
         },
         child: Text(
           'Iniciar sesión',
@@ -154,8 +153,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 Future<void> login(BuildContext context, String user, String pass) async {
-  final String apiUrl =
-      'http://10.0.2.2:5021/iniciar/sesion/'; // Reemplaza con la URL de tu mini API
+  final String apiUrl = 'http://10.0.2.2:5021/iniciar/sesion/'; // Reemplaza con la URL de tu mini API
   final Map<String, String> headers = {'Content-Type': 'application/json'};
   final Map<String, String> body = {'nombUser': pass, 'passUser': user};
 
@@ -178,7 +176,7 @@ Future<void> login(BuildContext context, String user, String pass) async {
               onPressed: () {
                 // Redirigir a otra página
                 Navigator.pushNamed(context,
-                    'elegirServidor'); // Reemplaza '/home' con la ruta de la página de destino
+                    'mantenimientoServicio'); // Reemplaza '/home' con la ruta de la página de destino
               },
               child: Text('Continuar'),
             ),
