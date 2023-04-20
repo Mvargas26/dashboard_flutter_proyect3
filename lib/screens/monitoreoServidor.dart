@@ -53,6 +53,84 @@ class _MonitoreoServidorState extends State<MonitoreoServidor> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Scaffold(
+            drawer: Drawer(
+              child: Container(
+                color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.8),
+                child: Column(children: [
+                  SizedBox(
+                    height: 60,
+                  ),
+                  TextButton(
+                      onPressed: () => Servidor_Service.activarNotifiServidor(
+                                  StaticC.userActivo, StaticC.idServidor)
+                              .then((resultado) {
+                            // Creamos un AlertDialog con el resultado obtenido
+                            AlertDialog alert = AlertDialog(
+                              title: Text("Mensaje"),
+                              content: Text(resultado),
+                              actions: [
+                                TextButton(
+                                  child: Text("Cerrar"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                            // Mostramos el AlertDialog
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alert;
+                              },
+                            );
+                          }),
+                      child: Text('Activar Notificaciones para este Servidor',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 33, 34, 42)))),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextButton(
+                      onPressed: () =>
+                          Servidor_Service.desactivarNotifiServidor(
+                                  StaticC.userActivo, StaticC.idServidor)
+                              .then((resultado) {
+                            // Creamos un AlertDialog con el resultado obtenido
+                            AlertDialog alert = AlertDialog(
+                              title: Text("Mensaje"),
+                              content: Text(resultado),
+                              actions: [
+                                TextButton(
+                                  child: Text("Cerrar"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                            // Mostramos el AlertDialog
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alert;
+                              },
+                            );
+                          }),
+                      child: Text(
+                          'Desactivar Notificaciones para este Servidor',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 33, 34, 42)))),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ]),
+              ),
+            ),
             appBar: new AppBar(
               title: new Text(
                   "Monitoreo del Servidor : " + "\n" + snapshot.data!.nombre),

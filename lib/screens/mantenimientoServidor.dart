@@ -28,21 +28,20 @@ class _MantenimientoServiidorPageState
   final _descripcionController = new TextEditingController();
   final _admiRegistraController = new TextEditingController();
   final _contrasenaController = new TextEditingController();
-  final _codigoomponenteController = new TextEditingController();  
+  final _codigoomponenteController = new TextEditingController();
   final _umbralController = new TextEditingController();
-  
-  
+
   final _porcentajeController = new TextEditingController();
   bool _saving = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       drawer: Drawer(
+      drawer: Drawer(
         child: Container(
           color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.8),
           child: Column(children: [
-              SizedBox(
+            SizedBox(
               height: 60,
             ),
             TextButton(
@@ -57,7 +56,8 @@ class _MantenimientoServiidorPageState
               height: 20,
             ),
             TextButton(
-                onPressed: () => Navigator.pushNamed(context, 'registrarServidor'),
+                onPressed: () =>
+                    Navigator.pushNamed(context, 'registrarServidor'),
                 child: Text('Servidor',
                     style: TextStyle(
                         fontSize: 20,
@@ -66,8 +66,6 @@ class _MantenimientoServiidorPageState
             SizedBox(
               height: 20,
             ),
-          
-           
           ]),
         ),
       ),
@@ -140,7 +138,6 @@ body: Container(
                     Text(snapshot.data![index].porcentaje.toString()),
                   ],
                 ),
-              
               );
             },
           );
@@ -166,15 +163,24 @@ body: Container(
     );
   }
 
- 
-
+  Widget _inputBuscar(){
+  return Row(
+    children: [
+      Expanded(
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'Nombre de usuario.',
+          ),
+        ),
+      ),
+      IconButton(
+        icon: Icon(Icons.search_rounded),
+        onPressed: () {},
+      ),
+    ],
+  );
+}
 
     
 
   }
-
-
-
-
-
-

@@ -94,4 +94,46 @@ class Servidor_Service {
       throw Exception("Fallo");
     }
   } //fn getServidores
+
+  //Activar Notificacion de Un Servicio
+  static Future<String> activarNotifiServidor(
+      String user, String idServidor) async {
+    var url = Uri.parse(_baseURL +
+        "Servidor/ActivarNotificacionServidor?user=" +
+        user +
+        "&idServidor=" +
+        idServidor);
+    final response = await http.put(url);
+
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      // Si la respuesta es exitosa, decodificamos los datos JSON y los retornamos
+      return "Alertas Activadas";
+    } else {
+      // Si la respuesta no es exitosa, lanzamos una excepción con el mensaje de error
+      return response.body.toString();
+    }
+  } //fn
+
+  //Desactivar Notificacion de Un Servicio
+  static Future<String> desactivarNotifiServidor(
+      String user, String idServidor) async {
+    var url = Uri.parse(_baseURL +
+        "Servidor/DesactivarNotificacionServidor?user=" +
+        user +
+        "&idServidor=" +
+        idServidor);
+    final response = await http.put(url);
+
+    print(response.body[1]);
+
+    if (response.statusCode == 200) {
+      // Si la respuesta es exitosa, decodificamos los datos JSON y los retornamos
+      return "Alertas Desactivadas";
+    } else {
+      // Si la respuesta no es exitosa, lanzamos una excepción con el mensaje de error
+      return response.body.toString();
+    }
+  } //fn
 }//fin class 
