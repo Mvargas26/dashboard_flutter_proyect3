@@ -27,6 +27,19 @@ static Future<List<ServidorNombre>> getNombre() async {
 }
 
 
+  //*** Metodo para obtener Seervidor
+static Future<List<ServidoresR>> getServidor() async {
+  var url = Uri.parse(_baseURL + "servidor");
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+  List<ServidoresR> Server =servidoresRFromJson(response.body);
+      return Server;
+  } else {
+    throw Exception("Fallo");
+  }
+}
+
+
 //*** Metodo para Crear parametro
 static Future<bool> createUmbral(Umbral c) async{
   var url =Uri.parse(_baseURL+"paramSensibilidad");
