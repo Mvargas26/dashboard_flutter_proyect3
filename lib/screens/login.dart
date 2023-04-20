@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
               type: TextInputType.text,
               pass: false,
               texto: 'Usuario',
-              controller: _passController),
+              controller: _idController),
           SizedBox(
             height: 25,
           ),
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
               type: TextInputType.text,
               pass: false,
               texto: 'Contraseña',
-              controller: _idController),
+              controller: _passController),
           SizedBox(
             height: 25,
           ),
@@ -113,13 +113,13 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       margin: EdgeInsets.all(2),
       child: TextButton(
-        onPressed: () {
+        onPressed:(){
           String user = _idController.text;
-          String pass = _passController.text;
-          login(context, user,
-              pass); // Pasar los valores ingresados al método de inicio de sesión
-          StaticC.userActivo = _passController.text;
-          //Navigator.pushNamed(context, 'elegirServidor');
+         String pass = _passController.text;
+         login(context, user, pass); // Pasar los valores ingresados al método de inicio de sesión
+      
+        Navigator.pushNamed(context, 'registrarServicio');
+        
         },
         child: Text(
           'Iniciar sesión',

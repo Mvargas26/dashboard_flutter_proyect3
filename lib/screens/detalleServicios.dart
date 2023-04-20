@@ -22,20 +22,7 @@ class _DetalleServiciosState extends State<DetalleServicios> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 125, 55, 107).withOpacity(0.4),
-        title: Text('Servicios',
-            style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 228, 228, 228))),
-       
-      ),
-      
-      
-      
-      body: createBody());
+    return Scaffold(body: createBody());
   }
 
   // **** METODOS ****
