@@ -153,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 Future<void> login(BuildContext context, String user, String pass) async {
-  final String apiUrl = 'http://localhost:5021/iniciar/sesion/'; // Reemplaza con la URL de tu mini API
+  final String apiUrl = 'http://10.0.2.2:5021/iniciar/sesion/'; // Reemplaza con la URL de tu mini API
   final Map<String, String> headers = {'Content-Type': 'application/json'};
   final Map<String, String> body = {'nombUser': user, 'passUser': pass};
 
